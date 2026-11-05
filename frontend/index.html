@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#f5f7f9" />
   <meta name="description" content="SentiVis: exploração rastreável de análise de sentimentos e cobertura lexical." />
   <title>SentiVis — Laboratório de análise</title>
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
   <link rel="stylesheet" href="/static/styles.css" />
   <script src="/static/app.js" defer></script>
 </head>
@@ -30,6 +31,10 @@
           <div class="eyebrow"><span class="eyebrow-line"></span> PESQUISA APLICADA EM PLN <span class="eyebrow-id">/ 01</span></div>
           <h1>Sentimentos<br/><em>sob análise.</em></h1>
           <p class="intro-desc">Investigue como léxicos interpretam textos em português e compare suas respostas com transparência sobre limites e incertezas.</p>
+          <div class="intro-actions">
+            <button type="button" id="hero-compare" class="hero-compare-btn">Comparar frases femininas e masculinas</button>
+            <span>Comparação descritiva, sem inferência automática de viés</span>
+          </div>
         </div>
         <div class="intro-aside" aria-label="Identificação do projeto">
           <div class="mini-kicker">MÓDULO ATIVO</div>
@@ -72,11 +77,11 @@
         <section class="lab-panel" aria-labelledby="workspace-title">
           <div class="workspace-head">
             <div><span class="section-no">02</span><h2 id="workspace-title">Área de exploração</h2></div>
-            <span class="method-tag">BASELINE ADITIVO · V0.1</span>
+            <span class="method-tag">BASELINE ADITIVO · V0.1 · EXPLORATÓRIO</span>
           </div>
           <div class="mode-tabs" role="tablist" aria-label="Modo de análise">
             <button id="tab-analisar" role="tab" type="button" aria-selected="true" aria-controls="pane-analisar" class="active">Analisar frase</button>
-            <button id="tab-comparar" role="tab" type="button" aria-selected="false" aria-controls="pane-comparar">Comparar frases</button>
+            <button id="tab-comparar" role="tab" type="button" aria-selected="false" aria-controls="pane-comparar">Comparar referências de gênero</button>
           </div>
 
           <div id="pane-analisar" class="mode-content" role="tabpanel" aria-labelledby="tab-analisar">
@@ -94,11 +99,12 @@
                 <div><div class="input-head"><label for="frase-feminina">Referência feminina</label><span id="length-feminina">0 / 5.000</span></div><textarea id="frase-feminina" maxlength="5000" placeholder="Ex.: A aluna é dedicada." required></textarea></div>
                 <div><div class="input-head"><label for="frase-masculina">Referência masculina</label><span id="length-masculina">0 / 5.000</span></div><textarea id="frase-masculina" maxlength="5000" placeholder="Ex.: O aluno é dedicado." required></textarea></div>
               </div>
+              <p class="comparison-notice">A troca de gênero não garante equivalência semântica. O sistema mostra diferenças descritivas, não determina viés.</p>
               <div class="form-bottom"><button type="button" id="load-pair" class="secondary-btn">Preencher exemplo</button><button id="btn-comparar" class="primary-btn" type="submit">Comparar textos <span aria-hidden="true">↗</span></button></div>
             </form>
           </div>
 
-          <div class="results" id="results" aria-live="polite" aria-atomic="false">
+          <div class="results" id="results" aria-live="polite" aria-atomic="false" aria-label="Resultados exploratórios">
             <div class="empty-state" id="empty-state">
               <div class="empty-art" aria-hidden="true"><span class="orbit orbit-one"></span><span class="orbit orbit-two"></span><span class="orbit-core">S</span></div>
               <h3>Pronto para explorar.</h3>

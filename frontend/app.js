@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   const $ = (id) => document.getElementById(id);
-  const state = { mode: 'analisar', last: null, request: null };
+  const state = { mode: 'analisar', last: null, requestSeq: 0 };
   const API = { info: '/api/ui/info', analisar: '/api/ui/analisar', comparar: '/api/ui/comparar' };
   const LIMIT = 5000;
   const EXAMPLES = {
@@ -49,6 +49,7 @@
     clearResults();
   }
   function clearResults() {
+    state.requestSeq += 1;
     state.last = null;
     $('results').innerHTML = '<div class="empty-state"><div class="empty-art" aria-hidden="true"><span class="orbit orbit-one"></span><span class="orbit orbit-two"></span><span class="orbit-core">S</span></div><h3>Pronto para explorar.</h3><p>Insira um texto ou selecione um exemplo para visualizar a cobertura lexical, os termos encontrados e as decisões do modelo.</p></div>';
   }
@@ -115,22 +116,45 @@
     const cls = data.classe_exploratoria || 'Abstenção';
     return header('Resultado da análise', 'Consulta lexical e soma exploratória, quando permitida.') +
       banner(data.status, data.motivos) +
-      `<div class="metrics">${metric('Pontuação', score)}${metric('Classe', cls)}${metric('Cobertura superficial', pct(data.cobertura_superficial), data.cobertura_superficial)}</div>` +
+      `<div class="metrics">${metric('Pontuação (exploratória)', score)}${metric('Classe (exploratória)', cls)}${metric('Cobertura superficial', pct(data.cobertura_superficial), data.cobertura_superficial)}</div>` +
       `<div class="result-block"><h4>Termos pontuados</h4>${termsTable(data.termos_pontuados)}</div>` +
       `<div class="result-block"><h4>Termos sem correspondência</h4>${chips(data.termos_sem_correspondencia)}</div>` +
       ((data.marcadores_de_negacao || []).length || (data.marcadores_de_modificacao || []).length ? `<div class="result-block"><h4>Marcadores contextuais detectados</h4>${chips([...(data.marcadores_de_negacao || []), ...(data.marcadores_de_modificacao || [])])}</div>` : '') +
       `<div class="soft-note">Pontuações não validadas cientificamente. Uma ausência lexical não representa sentimento neutro. Este sistema não determina viés de gênero.</div>` + technical(data);
   }
   function compareCard(data, label) {
-    return `<div class="compare-card"><div class="mini-kicker">${esc(label.toUpperCase())}</div><h4>${esc(data.texto)}</h4><div class="compare-score">${esc(num(data.pontuacao_exploratoria))}</div><div class="compare-caption">${esc(data.classe_exploratoria || 'Sem classificação')} · ${esc(pct(data.cobertura_superficial))} de cobertura</div><div class="small-meta">Status: ${esc(data.status)}</div><div style="margin-top:12px">${termsTable(data.termos_pontuados, true)}</div></div>`;
+    const score = num(data.pontuacao_exploratoria);
+    const abstained = data.pontuacao_exploratoria === null || data.pontuacao_exploratoria === undefined;
+    const labelClass = abstained ? 'card-abstention' : 'card-scored';
+    const status = abstained ? 'Abstenção — sem pontuação' : 'Pontuação exploratória';
+    const coverage = typeof data.cobertura_superficial === 'number' ? data.cobertura_superficial : 0;
+    const reasons = (Array.isArray(data.motivos) && data.motivos.length)
+      ? `<p class="compare-reasons">Motivos: ${esc(data.motivos.join(', '))}</p>` : '';
+    return `<article class="compare-card ${labelClass}">
+      <div class="mini-kicker">${esc(label.toUpperCase())}</div>
+      <h4>${esc(data.texto)}</h4>
+      <div class="compare-score-label">${esc(status)}</div>
+      <div class="compare-score">${esc(score)}</div>
+      <div class="compare-caption">${esc(data.classe_exploratoria ? data.classe_exploratoria + ' (exploratória)' : 'Sem classificação automática')}</div>
+      <div class="compare-coverage"><div class="compare-coverage-label"><span>Cobertura superficial</span><strong>${esc(pct(data.cobertura_superficial))}</strong></div><div class="meter" role="meter" aria-label="Cobertura superficial — ${esc(label)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(coverage * 100)}"><span style="width:${Math.max(0,Math.min(100,coverage*100))}%"></span></div></div>
+      ${reasons}<div class="small-meta">Status técnico: ${esc(data.status)}</div>
+      <div class="compare-terms"><h5>Termos pontuados</h5>${termsTable(data.termos_pontuados, true)}</div>
+      </article>`;
   }
   function renderCompare(data) {
-    const delta = data.ambas_pontuaveis ? num(data.delta_feminino_masculino_exploratorio) : 'Não calculável';
-    return header('Comparação exploratória', 'A equivalência semântica das frases não foi validada automaticamente.') +
+    const calculable = data.ambas_pontuaveis === true && typeof data.delta_feminino_masculino_exploratorio === 'number';
+    const delta = calculable ? num(data.delta_feminino_masculino_exploratorio) : 'Não calculável';
+    const deltaExplainer = !calculable
+      ? 'Ao menos uma análise se absteve; não existe diferença numérica calculável.'
+      : data.delta_feminino_masculino_exploratorio === 0
+        ? 'Este par não apresentou diferença na soma exploratória; isso não demonstra ausência de viés.'
+        : 'Há diferença na soma exploratória deste par, sem inferência causal ou estatística de viés.';
+    return header('Comparação de referências de gênero', 'Resultado descritivo e não validado cientificamente.') +
+      `<div class="compare-guidance" role="note"><strong>Interpretação responsável</strong><span>A equivalência semântica ainda não foi revisada por humanos. As pontuações não estimam viés de gênero.</span></div>` +
       `<div class="compare-results">${compareCard(data.feminina,'Referência feminina')}${compareCard(data.masculina,'Referência masculina')}</div>` +
-      `<div class="delta-strip"><span>Diferença descritiva (feminino − masculino)</span><strong>${esc(delta)}</strong></div>` +
+      `<div class="delta-panel"><div><span class="delta-label">Diferença descritiva (feminino − masculino)</span><p>${esc(deltaExplainer)}</p></div><strong>${esc(delta)}</strong></div>` +
       `<div class="soft-note">${esc(data.aviso || 'Nenhum resultado isolado constitui evidência de viés.')}</div>` +
-      `<details class="technical-details"><summary>Status individual e termos ausentes</summary><div class="result-block"><h4>Feminina — ${esc(data.feminina.status)}</h4>${chips(data.feminina.termos_sem_correspondencia)}</div><div class="result-block"><h4>Masculina — ${esc(data.masculina.status)}</h4>${chips(data.masculina.termos_sem_correspondencia)}</div><pre>${esc(JSON.stringify({metodo:data.metodo, manifesto_fontes:data.manifesto_fontes, validacao_cientifica:data.validacao_cientifica}, null, 2))}</pre></details>`;
+      `<details class="technical-details"><summary>Status individual, termos ausentes e proveniência</summary><div class="result-block"><h4>Feminina — ${esc(data.feminina.status)}</h4>${chips(data.feminina.termos_sem_correspondencia)}</div><div class="result-block"><h4>Masculina — ${esc(data.masculina.status)}</h4>${chips(data.masculina.termos_sem_correspondencia)}</div><pre>${esc(JSON.stringify({metodo:data.metodo, manifesto_fontes:data.manifesto_fontes, validacao_cientifica:data.validacao_cientifica}, null, 2))}</pre></details>`;
   }
   function downloadJson() {
     if (!state.last) return;
@@ -143,15 +167,18 @@
     setTimeout(() => URL.revokeObjectURL(href), 5000);
   }
   async function submit(mode, payload) {
+    const seq = ++state.requestSeq;
     const button = $('btn-' + mode);
     button.disabled = true; button.setAttribute('aria-busy', 'true');
     $('results').innerHTML = '<div class="loading" role="status">Processando o texto com os léxicos locais…</div>';
     try {
       const result = await fetchJson(API[mode], { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      if (seq !== state.requestSeq || mode !== state.mode) return;
       state.last = result; state.mode = mode;
       $('results').innerHTML = mode === 'analisar' ? renderSingle(result) : renderCompare(result);
       $('download-result')?.addEventListener('click', downloadJson);
     } catch (error) {
+      if (seq !== state.requestSeq || mode !== state.mode) return;
       state.last = null;
       const msg = error.name === 'AbortError' ? 'A requisição ultrapassou o tempo limite. Reinicie o servidor e tente novamente.' : error.message;
       $('results').innerHTML = `<div class="error-message" role="alert"><strong>Não foi possível concluir a consulta.</strong><div style="margin-top:6px">${esc(msg)}</div></div>`;
@@ -159,6 +186,11 @@
   }
   function setup() {
     $('lexico').addEventListener('change', updateLexicon);
+    $('hero-compare').addEventListener('click', () => {
+      switchTab('comparar');
+      $('workspace-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      $('frase-feminina').focus({ preventScroll: true });
+    });
     $('alvo').addEventListener('change', clearResults);
     ['analisar', 'comparar'].forEach(mode => $('tab-' + mode).addEventListener('click', () => switchTab(mode)));
     textLength('texto', 'length-texto'); textLength('frase-feminina', 'length-feminina'); textLength('frase-masculina', 'length-masculina');
