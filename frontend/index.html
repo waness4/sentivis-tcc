@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f5f7f9" />
+  <meta name="description" content="SentiVis: exploração rastreável de análise de sentimentos e cobertura lexical." />
+  <title>SentiVis — Laboratório de análise</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a href="/" class="brand" aria-label="SentiVis — início">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="brand-name">Senti<span>Vis</span><span class="brand-period">.</span></span>
+      </a>
+      <nav class="topnav" aria-label="Navegação da página">
+        <a href="#laboratorio" class="active">Laboratório</a>
+        <a href="#metodologia">Metodologia</a>
+        <a href="/docs" target="_blank" rel="noopener">Documentação da API</a>
+      </nav>
+      <div class="header-side"><span class="status-light" aria-hidden="true"></span><span>Protótipo experimental</span></div>
+    </header>
+
+    <main>
+      <section class="intro" id="laboratorio">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-line"></span> PESQUISA APLICADA EM PLN <span class="eyebrow-id">/ 01</span></div>
+          <h1>Sentimentos<br/><em>sob análise.</em></h1>
+          <p class="intro-desc">Investigue como léxicos interpretam textos em português e compare suas respostas com transparência sobre limites e incertezas.</p>
+        </div>
+        <div class="intro-aside" aria-label="Identificação do projeto">
+          <div class="mini-kicker">MÓDULO ATIVO</div>
+          <div class="intro-aside-heading">Exploração<br/>lexical</div>
+          <div class="mini-rule"></div>
+          <p>OpLexicon 3.0<br/>SentiLex-PT02</p>
+          <span class="aside-note">Versão de demonstração · v0.1</span>
+        </div>
+      </section>
+
+      <div class="workarea">
+        <aside class="sidebar">
+          <div class="panel-heading"><span class="section-no">01</span><h2>Configuração</h2></div>
+          <p class="sidebar-lead">Escolha os parâmetros da consulta.</p>
+          <div class="field">
+            <label for="lexico">Léxico de referência</label>
+            <div class="select-wrap"><select id="lexico">
+              <option value="oplexicon">OpLexicon 3.0</option>
+              <option value="sentilex">SentiLex-PT02</option>
+            </select></div>
+            <p class="field-hint" id="lexico-hint">Recurso lexical com polaridade global por entrada.</p>
+          </div>
+          <div class="field" id="alvo-field" hidden>
+            <label for="alvo">Alvo lexical (hipótese manual)</label>
+            <div class="select-wrap"><select id="alvo">
+              <option value="">Não informado — abstenção</option>
+              <option value="N0">N0</option>
+              <option value="N1">N1</option>
+            </select></div>
+            <p class="field-hint">O sistema não infere automaticamente o papel de N0 ou N1 na frase.</p>
+          </div>
+          <div class="sidebar-divider"></div>
+          <div class="runtime-label">ESTADO DOS ARQUIVOS</div>
+          <div class="availability-row"><span>OpLexicon</span><span id="avail-oplexicon" class="availability neutral">Verificando</span></div>
+          <div class="availability-row"><span>SentiLex</span><span id="avail-sentilex" class="availability neutral">Verificando</span></div>
+          <p class="availability-note">A presença dos arquivos não substitui a verificação de integridade.</p>
+          <div class="sidebar-footer">Os dados e as respostas não são enviados a serviços externos pela interface.</div>
+        </aside>
+
+        <section class="lab-panel" aria-labelledby="workspace-title">
+          <div class="workspace-head">
+            <div><span class="section-no">02</span><h2 id="workspace-title">Área de exploração</h2></div>
+            <span class="method-tag">BASELINE ADITIVO · V0.1</span>
+          </div>
+          <div class="mode-tabs" role="tablist" aria-label="Modo de análise">
+            <button id="tab-analisar" role="tab" type="button" aria-selected="true" aria-controls="pane-analisar" class="active">Analisar frase</button>
+            <button id="tab-comparar" role="tab" type="button" aria-selected="false" aria-controls="pane-comparar">Comparar frases</button>
+          </div>
+
+          <div id="pane-analisar" class="mode-content" role="tabpanel" aria-labelledby="tab-analisar">
+            <form id="form-analisar" novalidate>
+              <div class="input-head"><label for="texto">Texto para análise</label><span id="length-texto">0 / 5.000</span></div>
+              <textarea id="texto" maxlength="5000" placeholder="Insira uma frase em português para investigar sua cobertura lexical…" required></textarea>
+              <div class="example-row"><span>EXEMPLOS</span><button type="button" class="example-btn" data-example="dedicada">Avaliação positiva</button><button type="button" class="example-btn" data-example="facil">Polaridade ambígua</button><button type="button" class="example-btn" data-example="negacao">Com negação</button></div>
+              <div class="form-bottom"><span>Não são atribuídas polaridades a termos ausentes.</span><button id="btn-analisar" class="primary-btn" type="submit">Analisar texto <span aria-hidden="true">↗</span></button></div>
+            </form>
+          </div>
+
+          <div id="pane-comparar" class="mode-content" role="tabpanel" aria-labelledby="tab-comparar" hidden>
+            <form id="form-comparar" novalidate>
+              <div class="compare-fields">
+                <div><div class="input-head"><label for="frase-feminina">Referência feminina</label><span id="length-feminina">0 / 5.000</span></div><textarea id="frase-feminina" maxlength="5000" placeholder="Ex.: A aluna é dedicada." required></textarea></div>
+                <div><div class="input-head"><label for="frase-masculina">Referência masculina</label><span id="length-masculina">0 / 5.000</span></div><textarea id="frase-masculina" maxlength="5000" placeholder="Ex.: O aluno é dedicado." required></textarea></div>
+              </div>
+              <div class="form-bottom"><button type="button" id="load-pair" class="secondary-btn">Preencher exemplo</button><button id="btn-comparar" class="primary-btn" type="submit">Comparar textos <span aria-hidden="true">↗</span></button></div>
+            </form>
+          </div>
+
+          <div class="results" id="results" aria-live="polite" aria-atomic="false">
+            <div class="empty-state" id="empty-state">
+              <div class="empty-art" aria-hidden="true"><span class="orbit orbit-one"></span><span class="orbit orbit-two"></span><span class="orbit-core">S</span></div>
+              <h3>Pronto para explorar.</h3>
+              <p>Insira um texto ou selecione um exemplo para visualizar a cobertura lexical, os termos encontrados e as decisões do modelo.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="method-section" id="metodologia">
+        <div><span class="eyebrow"><span class="eyebrow-line"></span> TRANSPARÊNCIA METODOLÓGICA <span class="eyebrow-id">/ 02</span></span><h2>O que o sistema<br/><em>pode — e não pode — concluir.</em></h2></div>
+        <div class="method-cards">
+          <div class="method-card"><span class="method-num">01 /</span><h3>Correspondência rastreável</h3><p>O sistema identifica termos presentes no léxico, contabiliza cobertura e informa a fonte de cada polaridade.</p></div>
+          <div class="method-card"><span class="method-num">02 /</span><h3>Abstenção explícita</h3><p>Entradas conflitantes, negação não resolvida e ausência de alvo impedem classificações automáticas.</p></div>
+          <div class="method-card"><span class="method-num">03 /</span><h3>Sem inferência de viés</h3><p>Diferenças exploratórias, inclusive zero, não confirmam nem descartam viés de gênero. A avaliação humana e estatística está pendente.</p></div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer"><span>SentiVis <span class="footer-sep">/</span> Laboratório de análise lexical</span><span>Protótipo de pesquisa · Resultados não validados cientificamente</span></footer>
+  </div>
+</body>
+</html>
