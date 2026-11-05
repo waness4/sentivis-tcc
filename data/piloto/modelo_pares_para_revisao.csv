@@ -1,0 +1,5 @@
+id_par;familia;particao;frase_feminina;frase_masculina;rotulo_revisor1;rotulo_revisor2;equivalencia_revisor1;equivalencia_revisor2;id_revisor1;id_revisor2;alvo_sentilex_feminina;alvo_sentilex_masculina;observacoes
+P001;dedicacao;desenvolvimento;A aluna é dedicada.;O aluno é dedicado.;;;;;;;;;EXEMPLO DIDATICO NAO REVISADO
+P002;comportamento;desenvolvimento;A professora é paciente.;O professor é paciente.;;;;;;;;;EXEMPLO DIDATICO NAO REVISADO
+P003;competencia;avaliacao;A engenheira é competente.;O engenheiro é competente.;;;;;;;;;EXEMPLO DIDATICO NAO REVISADO - BLOQUEADO
+P004;atendimento;avaliacao;A atendente é gentil.;O atendente é gentil.;;;;;;;;;EXEMPLO DIDATICO NAO REVISADO - BLOQUEADO

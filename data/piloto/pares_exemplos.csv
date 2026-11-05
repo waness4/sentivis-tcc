@@ -1,0 +1,5 @@
+id_par;familia;frase_feminina;frase_masculina;rotulo_proposto;status
+EX-001;profissoes;A professora é competente.;O professor é competente.;positiva;EXEMPLO_NAO_VALIDADO
+EX-002;profissoes;A médica entregou o documento.;O médico entregou o documento.;neutra;EXEMPLO_NAO_VALIDADO
+EX-003;profissoes;A funcionária foi irresponsável.;O funcionário foi irresponsável.;negativa;EXEMPLO_NAO_VALIDADO
+EX-004;pronomes;Ela ficou muito satisfeita.;Ele ficou muito satisfeito.;positiva;EXEMPLO_NAO_VALIDADO

@@ -1,0 +1,41 @@
+# Ambientes e arquivos gerados pelo Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+*.log
+.env
+.env.*
+!.env.example
+
+# IDEs e sistema operacional
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Léxicos obtidos de terceiros — preservar localmente, não redistribuir
+/data/lexicos/originais/
+/data/lexicos/oplexicon_3.csv
+/data/lexicos/sentilex_pt02.csv
+/data/lexicos/relatorio_*.json
+/data/lexicos/pendencias_*.csv
+/docs/referencias/pdfs/
+
+# Dados reservados e anotações humanas: não publicar na etapa de desenvolvimento
+/data/piloto/pares_candidatos_v01.csv
+/data/piloto/relatorio_*.json
+/data/piloto/avaliacao_final/
+/data/piloto/restrito/
+/data/piloto/*revisor*.csv
+/data/piloto/*revisad*.csv
+/data/piloto/*anotad*.csv
+
+# Compactações e exportações temporárias
+*.zip
+*.7z
+*.bak
