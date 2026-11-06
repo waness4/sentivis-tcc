@@ -187,6 +187,27 @@ def _calcular_grupo(grupo: list[dict]) -> dict:
     }
 
 
+def _extrair_piloto(documento: object, sha_dataset: str) -> dict:
+    """Aceita o JSON real do Bloco 7 ({auditoria, piloto}) ou o formato legado.
+
+    Quando presente, a auditoria deve ser válida e corresponder ao mesmo CSV.
+    A verificação do piloto, dos pares e da partição continua em calcular().
+    """
+    _exigir(isinstance(documento, dict), "Relatório do piloto deve ser um objeto JSON.")
+    if "piloto" not in documento and "auditoria" not in documento:
+        return documento
+    auditoria, piloto = documento.get("auditoria"), documento.get("piloto")
+    _exigir(isinstance(auditoria, dict) and isinstance(piloto, dict),
+            "Relatório integrado exige objetos 'auditoria' e 'piloto'.")
+    _exigir(auditoria.get("metodo") == PILOTO_VERSAO and
+            auditoria.get("status") == "ESTRUTURA_VALIDADA_SEM_INFERENCIA_DE_VIES" and
+            auditoria.get("erros") == [],
+            "Auditoria do piloto inválida ou com erros estruturais.")
+    _exigir(auditoria.get("sha256_dataset") == sha_dataset,
+            "SHA-256 da auditoria difere do CSV de revisão humana.")
+    return piloto
+
+
 def calcular(entrada_csv: Path, piloto_json: Path) -> tuple[dict, list[dict]]:
     """Cruza baseline já executado com CSV humano sem pontuar novas frases.
 
@@ -194,8 +215,9 @@ def calcular(entrada_csv: Path, piloto_json: Path) -> tuple[dict, list[dict]]:
     """
     linhas, sha, aprovados = _validar_dataset(entrada_csv)
     _exigir(bool(aprovados), "Ainda não existem pares aprovados por dois revisores. Métricas bloqueadas.")
-    piloto = json.loads(piloto_json.read_text(encoding="utf-8"))
-    _exigir(isinstance(piloto, dict) and piloto.get("metodo") == PILOTO_VERSAO,
+    documento = json.loads(piloto_json.read_text(encoding="utf-8"))
+    piloto = _extrair_piloto(documento, sha)
+    _exigir(piloto.get("metodo") == PILOTO_VERSAO,
             "JSON não foi gerado pelo protocolo do piloto esperado.")
     _exigir(piloto.get("fase") == "PILOTO_EXPLORATORIO_DESENVOLVIMENTO" and
             piloto.get("avaliacao_final_executada") is False and piloto.get("evidencia_de_vies") is None,
