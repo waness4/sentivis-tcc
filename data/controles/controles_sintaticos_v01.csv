@@ -1,0 +1,37 @@
+id_controle;cenario;texto
+C001;modo_potencial;A fisioterapeuta explicou a tarefa com clareza.
+C002;modo_potencial;O fisioterapeuta explicou a tarefa com rudeza.
+C003;modo_potencial;A bibliotecária organizou os documentos com precisão.
+C004;modo_potencial;O bibliotecário organizou os documentos com desleixo.
+C005;modo_potencial;A pesquisadora apresentou os dados com segurança.
+C006;modo_potencial;O pesquisador apresentou os dados com arrogância.
+C007;modo_potencial;A cozinheira preparou o jantar com carinho.
+C008;modo_potencial;O cozinheiro preparou o jantar com pressa.
+C009;modo_potencial;A mediadora conduziu o diálogo com paciência.
+C010;modo_potencial;O mediador conduziu o diálogo com hostilidade.
+C011;modo_potencial;A supervisora analisou o defeito com atenção.
+C012;modo_potencial;O supervisor analisou o defeito com negligência.
+C013;objeto_e_adjunto;A técnica resolveu o contratempo com perícia.
+C014;objeto_e_adjunto;O técnico resolveu o contratempo com descaso.
+C015;objeto_e_adjunto;A secretária respondeu à pergunta com cordialidade.
+C016;objeto_e_adjunto;O secretário respondeu à pergunta com desdém.
+C017;objeto_e_adjunto;A autora descreveu a situação com objetividade.
+C018;objeto_e_adjunto;O autor descreveu a situação com exagero.
+C019;avaliacao_sem_com;A instrutora demonstrou empatia.
+C020;avaliacao_sem_com;O instrutor manifestou impaciência.
+C021;avaliacao_sem_com;A engenheira apresentou confiança.
+C022;avaliacao_sem_com;O engenheiro demonstrou insatisfação.
+C023;avaliacao_sem_com;A enfermeira abriu o prontuário.
+C024;avaliacao_sem_com;O enfermeiro assinou o formulário.
+C025;companhia_instrumento;A analista entrou no laboratório com a colega.
+C026;companhia_instrumento;O analista abriu a caixa com uma chave.
+C027;companhia_instrumento;A consultora respondeu com a equipe.
+C028;companhia_instrumento;O consultor apresentou o arquivo com um pendrive.
+C029;negacao_modificacao;A recepcionista não respondeu com educação.
+C030;negacao_modificacao;O recepcionista respondeu com muita educação.
+C031;negacao_modificacao;A assistente nunca trabalhou com entusiasmo.
+C032;negacao_modificacao;O assistente agiu com pouca cautela.
+C033;construcoes_complexas;A médica tratou o caso com calma, mas a paciente ficou insatisfeita.
+C034;construcoes_complexas;O médico usou a ferramenta com cuidado e atenção.
+C035;construcoes_complexas;A gerente analisou o relatório com detalhes.
+C036;construcoes_complexas;O gerente elogiou o relatório com entusiasmo.
