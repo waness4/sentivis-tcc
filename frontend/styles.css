@@ -50,3 +50,13 @@
 @media(max-width:980px){.intro-aside{display:none}.intro{padding:36px 0 31px}.intro-actions>span{max-width:unset}}
 @media(max-width:780px){.intro h1{font-size:clamp(45px,10vw,58px);letter-spacing:-2.8px}.intro{padding:30px 0 25px}.intro-actions{align-items:flex-start;flex-direction:column}.compare-results{grid-template-columns:1fr}.method-section{padding:52px 0}}
 @media(max-width:520px){.delta-panel{flex-direction:column;align-items:flex-start;gap:9px}.delta-panel>strong{font-size:27px}.mode-tabs{gap:13px}.mode-tabs button{font-size:12px}.hero-compare-btn{width:100%}.compare-card{padding:16px}}
+
+/* Bloco 22 — seleção explícita do método e diagnóstico contextual V04. */
+.hypothesis-label{display:flex!important;align-items:flex-start;gap:10px;line-height:1.55;cursor:pointer}
+.hypothesis-label input{margin:3px 0 0;accent-color:var(--teal);width:17px;height:17px;flex-shrink:0}
+.context-discarded{font-size:12px;line-height:1.6;color:var(--teal-dark);background:var(--light-teal);border-radius:8px;padding:9px 12px}
+.context-table-wrap{overflow:auto;max-width:100%}
+.context-table{table-layout:auto;min-width:400px}
+.context-table td,.context-table th{font-size:11px!important;text-align:left!important;word-break:normal;overflow-wrap:anywhere}
+.context-panel{margin-top:15px}
+.method-tag{max-width:220px;text-align:right;line-height:1.5}

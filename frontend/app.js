@@ -16,6 +16,10 @@
     ABSTENCAO_LEXICAL: ['Abstenção por conflito lexical', 'Uma ou mais ocorrências exigem revisão antes de atribuir pontuação.', 'warn'],
     ABSTENCAO_ALVO: ['Abstenção por alvo indefinido', 'A relação N0/N1 não foi estabelecida a partir do contexto.', 'warn'],
     ABSTENCAO_CONTEXTO: ['Abstenção por contexto', 'Há negação ou modificador sem regra contextual validada.', 'warn'],
+    ABSTENCAO_CATEGORIA_GRAMATICAL: ['Abstenção gramatical', 'A classe da palavra não corresponde à entrada lexical.', 'warn'],
+    ABSTENCAO_ANEXACAO_AMBIGUA: ['Ligação sintática ambígua', 'O papel da expressão avaliativa não pôde ser determinado com segurança.', 'warn'],
+    ABSTENCAO_PAPEL_SINTATICO: ['Papel sintático não reconhecido', 'Não foi identificado um único adjunto elegível para a hipótese.', 'warn'],
+    ABSTENCAO_HIPOTESE_NAO_AUTORIZADA: ['Hipótese não ativada', 'A classificação contextual exige ativação explícita.', 'warn'],
   };
   function esc(value) {
     return String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
@@ -25,6 +29,16 @@
   }
   function num(value) { return typeof value === 'number' ? String(value) : '—'; }
   function getTarget() { return $('lexico').value === 'sentilex' ? $('alvo').value || null : null; }
+  function getMethod() { return $('lexico').value === 'sentilex' ? $('metodo').value : 'aditivo_v01'; }
+  function getOptions() {
+    const metodo = getMethod(), alvo = getTarget();
+    const hipotese_modo = metodo === 'contextual_v04' && $('hipotese-modo').checked;
+    if (metodo === 'contextual_v04' && (!alvo || !hipotese_modo)) {
+      $('results').innerHTML = '<div class="error-message" role="alert">Para usar a V04, selecione N0/N1 manualmente e marque a ativação explícita da hipótese sintática.</div>';
+      return null;
+    }
+    return { lexico: $('lexico').value, alvo, metodo, hipotese_modo };
+  }
   function textLength(id, label) {
     const el = $(id);
     const update = () => { $(label).textContent = `${el.value.length.toLocaleString('pt-BR')} / ${LIMIT.toLocaleString('pt-BR')}`; };
@@ -33,9 +47,24 @@
   function updateLexicon() {
     const selected = $('lexico').value;
     $('alvo-field').hidden = selected !== 'sentilex';
+    $('metodo-field').hidden = selected !== 'sentilex';
+    if (selected !== 'sentilex') {
+      $('metodo').value = 'aditivo_v01';
+      $('alvo').value = '';
+      $('hipotese-modo').checked = false;
+    }
     $('lexico-hint').textContent = selected === 'sentilex'
       ? 'Registra polaridades por alvo N0/N1 e flexões de palavras.'
       : 'Recurso lexical com polaridade global por entrada.';
+    updateMethod();
+  }
+  function updateMethod() {
+    const v04 = getMethod() === 'contextual_v04';
+    $('hipotese-field').hidden = !v04;
+    if (!v04) $('hipotese-modo').checked = false;
+    $('method-tag').textContent = v04
+      ? 'SENTILEX · V04 · HIPÓTESE NÃO VALIDADA'
+      : 'BASELINE ADITIVO · V0.1 · EXPLORATÓRIO';
     clearResults();
   }
   function switchTab(mode) {
@@ -109,7 +138,19 @@
     return `<div class="chips">${words.map(word => `<span class="chip">${esc(word)}</span>`).join('')}</div>`;
   }
   function technical(data) {
-    return `<details class="technical-details"><summary>Detalhes técnicos e proveniência dos dados</summary><pre>${esc(JSON.stringify({metodo:data.metodo, status:data.status, motivos:data.motivos, manifesto_fontes:data.manifesto_fontes, validacao_cientifica:data.validacao_cientifica}, null, 2))}</pre></details>`;
+    return `<details class="technical-details"><summary>Detalhes técnicos e proveniência dos dados</summary><pre>${esc(JSON.stringify({metodo:data.metodo, status:data.status, motivos:data.motivos, filtragem_neutros_pos:data.filtragem_neutros_pos, checagens_contextuais:data.checagens_contextuais, manifesto_fontes:data.manifesto_fontes, etiquetador:data.etiquetador, validacao_cientifica:data.validacao_cientifica}, null, 2))}</pre></details>`;
+  }
+  function contextual(data) {
+    if (!data || !String(data.metodo || '').includes('v0.4')) return '';
+    const checagens = Array.isArray(data.checagens_contextuais) ? data.checagens_contextuais : [];
+    const filtro = data.filtragem_neutros_pos || {};
+    const descartados = Array.isArray(filtro.descartados) ? filtro.descartados : [];
+    const linhas = checagens.map(x => `<tr><td>${esc(x.expressao)}</td><td>${esc(x.pos || '—')}</td><td>${esc(x.papel_hipotetico || '—')}</td><td>${esc(x.motivo || 'Sem bloqueio gramatical')}</td></tr>`).join('');
+    return `<div class="result-block context-panel"><h4>Diagnóstico contextual V04</h4>
+      <p class="field-hint">Pistas sintáticas são estimativas, não comprovação do sentido ou do alvo.</p>
+      ${descartados.length ? `<p class="context-discarded">Correspondências neutras descartadas por incompatibilidade: ${descartados.map(x => esc(x.expressao)).join(', ')}.</p>` : ''}
+      ${checagens.length ? `<div class="context-table-wrap"><table class="term-table context-table"><thead><tr><th>Termo</th><th>PoS</th><th>Papel estimado</th><th>Observação</th></tr></thead><tbody>${linhas}</tbody></table></div>` : '<p class="field-hint">Nenhuma checagem sintática disponível.</p>'}
+    </div>`;
   }
   function renderSingle(data) {
     const score = num(data.pontuacao_exploratoria);
@@ -120,6 +161,7 @@
       `<div class="result-block"><h4>Termos pontuados</h4>${termsTable(data.termos_pontuados)}</div>` +
       `<div class="result-block"><h4>Termos sem correspondência</h4>${chips(data.termos_sem_correspondencia)}</div>` +
       ((data.marcadores_de_negacao || []).length || (data.marcadores_de_modificacao || []).length ? `<div class="result-block"><h4>Marcadores contextuais detectados</h4>${chips([...(data.marcadores_de_negacao || []), ...(data.marcadores_de_modificacao || [])])}</div>` : '') +
+      contextual(data) +
       `<div class="soft-note">Pontuações não validadas cientificamente. Uma ausência lexical não representa sentimento neutro. Este sistema não determina viés de gênero.</div>` + technical(data);
   }
   function compareCard(data, label) {
@@ -139,6 +181,7 @@
       <div class="compare-coverage"><div class="compare-coverage-label"><span>Cobertura superficial</span><strong>${esc(pct(data.cobertura_superficial))}</strong></div><div class="meter" role="meter" aria-label="Cobertura superficial — ${esc(label)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(coverage * 100)}"><span style="width:${Math.max(0,Math.min(100,coverage*100))}%"></span></div></div>
       ${reasons}<div class="small-meta">Status técnico: ${esc(data.status)}</div>
       <div class="compare-terms"><h5>Termos pontuados</h5>${termsTable(data.termos_pontuados, true)}</div>
+      ${contextual(data)}
       </article>`;
   }
   function renderCompare(data) {
@@ -154,7 +197,7 @@
       `<div class="compare-results">${compareCard(data.feminina,'Referência feminina')}${compareCard(data.masculina,'Referência masculina')}</div>` +
       `<div class="delta-panel"><div><span class="delta-label">Diferença descritiva (feminino − masculino)</span><p>${esc(deltaExplainer)}</p></div><strong>${esc(delta)}</strong></div>` +
       `<div class="soft-note">${esc(data.aviso || 'Nenhum resultado isolado constitui evidência de viés.')}</div>` +
-      `<details class="technical-details"><summary>Status individual, termos ausentes e proveniência</summary><div class="result-block"><h4>Feminina — ${esc(data.feminina.status)}</h4>${chips(data.feminina.termos_sem_correspondencia)}</div><div class="result-block"><h4>Masculina — ${esc(data.masculina.status)}</h4>${chips(data.masculina.termos_sem_correspondencia)}</div><pre>${esc(JSON.stringify({metodo:data.metodo, manifesto_fontes:data.manifesto_fontes, validacao_cientifica:data.validacao_cientifica}, null, 2))}</pre></details>`;
+      `<details class="technical-details"><summary>Status individual, termos ausentes e proveniência</summary><div class="result-block"><h4>Feminina — ${esc(data.feminina.status)}</h4>${chips(data.feminina.termos_sem_correspondencia)}</div><div class="result-block"><h4>Masculina — ${esc(data.masculina.status)}</h4>${chips(data.masculina.termos_sem_correspondencia)}</div><pre>${esc(JSON.stringify({metodo:data.metodo, manifesto_fontes:data.manifesto_fontes, etiquetador:data.etiquetador, validacao_cientifica:data.validacao_cientifica}, null, 2))}</pre></details>`;
   }
   function downloadJson() {
     if (!state.last) return;
@@ -186,6 +229,8 @@
   }
   function setup() {
     $('lexico').addEventListener('change', updateLexicon);
+    $('metodo').addEventListener('change', updateMethod);
+    $('hipotese-modo').addEventListener('change', clearResults);
     $('hero-compare').addEventListener('click', () => {
       switchTab('comparar');
       $('workspace-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -205,13 +250,15 @@
     $('form-analisar').addEventListener('submit', (e) => {
       e.preventDefault(); const texto = $('texto').value.trim();
       if (!texto) { $('texto').focus(); return; }
-      submit('analisar', { texto, lexico: $('lexico').value, alvo: getTarget() });
+      const options = getOptions();
+      if (options) submit('analisar', { texto, ...options });
     });
     $('form-comparar').addEventListener('submit', (e) => {
       e.preventDefault(); const feminina = $('frase-feminina').value.trim(), masculina = $('frase-masculina').value.trim();
       if (!feminina) { $('frase-feminina').focus(); return; }
       if (!masculina) { $('frase-masculina').focus(); return; }
-      submit('comparar', { feminina, masculina, lexico: $('lexico').value, alvo: getTarget() });
+      const options = getOptions();
+      if (options) submit('comparar', { feminina, masculina, ...options });
     });
     updateLexicon(); updateAvailability();
   }
