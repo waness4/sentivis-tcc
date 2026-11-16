@@ -76,3 +76,36 @@
 .context-table th{line-height:1.4}
 .context-table td{line-height:1.55}
 @media(max-width:520px){.interpretation-panel{padding:13px 14px}.coverage-note{margin-top:0}.context-table{min-width:430px}}
+
+/* Bloco 24 — legibilidade das tabelas e navegação horizontal local. */
+/* O conteúdo técnico precisa continuar legível quando há dois cartões lado a lado. */
+.context-table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+  scrollbar-width: thin;
+}
+.context-table {
+  min-width: 660px;
+  table-layout: auto;
+}
+/* Evita a divisão de “Termo” e “gentileza” em linhas diferentes. */
+.context-table th:first-child,
+.context-table td:first-child {
+  min-width: 88px;
+  white-space: nowrap;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+/* As colunas descritivas ainda podem quebrar frases entre palavras. */
+.context-table th:not(:first-child),
+.context-table td:not(:first-child) {
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+/* A tabela compacta de termos pontuados também preserva termos inteiros. */
+.compare-card .term-table:not(.context-table) th:first-child,
+.compare-card .term-table:not(.context-table) td:first-child {
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+}
