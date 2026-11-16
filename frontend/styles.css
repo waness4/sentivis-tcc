@@ -60,3 +60,19 @@
 .context-table td,.context-table th{font-size:11px!important;text-align:left!important;word-break:normal;overflow-wrap:anywhere}
 .context-panel{margin-top:15px}
 .method-tag{max-width:220px;text-align:right;line-height:1.5}
+
+/* Bloco 23 — explicações acessíveis; apenas apresentação, sem alteração dos resultados. */
+.interpretation-panel{border:1px solid #dce6e1;background:#fcfdfc;border-radius:10px;padding:15px 17px;margin:16px 0}
+.interpretation-panel h4{font-size:12px;line-height:1.45;margin:0 0 7px;font-weight:750;color:var(--ink)}
+.interpretation-panel p{font-size:12px;color:#566d67;line-height:1.75;margin:0}
+.interpretation-panel .interpretation-detail{margin-top:9px;padding-top:9px;border-top:1px solid var(--line);color:#596b64}
+.coverage-note{font-size:11px;color:#667773;line-height:1.7;margin:-7px 0 19px;max-width:780px}
+.interpretation-panel.compact{margin:14px 0 10px;padding:12px 13px;background:#fff}
+.interpretation-panel.compact h4{font-size:11px}
+.interpretation-panel.compact p{font-size:11px;line-height:1.65}
+.coverage-note.compact{margin:9px 0 0;font-size:10.5px}
+.compare-card .interpretation-panel{overflow-wrap:anywhere}
+.context-panel .field-hint{color:#637570}
+.context-table th{line-height:1.4}
+.context-table td{line-height:1.55}
+@media(max-width:520px){.interpretation-panel{padding:13px 14px}.coverage-note{margin-top:0}.context-table{min-width:430px}}

@@ -1,4 +1,4 @@
-/* SentiVis — interface v0.1; usa exclusivamente dados de backend.ui_server. */
+/* SentiVis — apresentação experimental V01/V04; apenas dados de backend.ui_server. */
 (() => {
   'use strict';
   const $ = (id) => document.getElementById(id);
@@ -21,6 +21,95 @@
     ABSTENCAO_PAPEL_SINTATICO: ['Papel sintático não reconhecido', 'Não foi identificado um único adjunto elegível para a hipótese.', 'warn'],
     ABSTENCAO_HIPOTESE_NAO_AUTORIZADA: ['Hipótese não ativada', 'A classificação contextual exige ativação explícita.', 'warn'],
   };
+  // A camada de apresentação explica códigos; ela nunca altera decisões do backend.
+  const MOTIVOS = {
+    nenhuma_correspondencia_lexical: 'Nenhuma palavra da frase teve correspondência lexical.',
+    categoria_gramatical_incompativel: 'Uma palavra tem classe gramatical diferente da entrada encontrada no léxico.',
+    sintagma_com_ligado_a_nome: 'A expressão introduzida por “com” foi ligada a um substantivo; o seu papel na frase permanece incerto.',
+    sem_adjunto_com_unico_ligado_a_verbo: 'Não foi identificado um único complemento com “com” ligado ao verbo.',
+    multiplos_adjuntos_com_avaliativos: 'Há mais de um complemento avaliativo possível.',
+    hipotese_modo_nao_ativada: 'A hipótese sintática não foi ativada explicitamente.',
+    ambiguidade_categoria: 'O léxico apresenta mais de uma interpretação de classe gramatical.',
+    ambiguidade_lema: 'O termo pode corresponder a mais de uma forma de referência no léxico.',
+    negacao_sem_escopo: 'Existe uma negação cujo alcance não foi determinado.',
+    modificador_sem_escopo: 'Existe um modificador cujo alcance não foi determinado.',
+    ambiguidade_polaridade: 'O léxico apresenta polaridades conflitantes para esta ocorrência.',
+  };
+  const POS = {
+    NOUN: 'Substantivo', VERB: 'Verbo', ADJ: 'Adjetivo', ADV: 'Advérbio',
+    PROPN: 'Nome próprio', ADP: 'Preposição', DET: 'Determinante',
+    PRON: 'Pronome', AUX: 'Auxiliar', NUM: 'Numeral',
+  };
+  const PAPEIS = {
+    anexacao_nominal_ambigua: 'Ligação a substantivo — incerta',
+    adjunto_com_ligado_ao_verbo: 'Possível complemento ligado ao verbo',
+    indeterminado: 'Não determinado',
+  };
+  function explicarMotivo(codigo) {
+    return MOTIVOS[codigo] || `Motivo técnico sem descrição: ${String(codigo)}`;
+  }
+  function nomePos(codigo) {
+    return POS[codigo] || (codigo ? `Categoria ${String(codigo)}` : 'Não identificada');
+  }
+  function nomePapel(codigo) {
+    return PAPEIS[codigo] || (codigo ? `Papel não descrito (${String(codigo)})` : 'Não determinado');
+  }
+  function razoesHumanas(motivos) {
+    return Array.isArray(motivos) ? motivos.map(explicarMotivo) : [];
+  }
+  function explicacaoResultado(data) {
+    const status = data.status;
+    const checagens = Array.isArray(data.checagens_contextuais) ? data.checagens_contextuais : [];
+    const ambiguos = checagens.filter(x => x.papel_hipotetico === 'anexacao_nominal_ambigua');
+    if (status === 'ABSTENCAO_ANEXACAO_AMBIGUA' && ambiguos.length) {
+      const termos = ambiguos.map(x => `“${x.expressao}”`).join(', ');
+      return `O léxico reconheceu ${termos}, mas a análise sintática não determinou com segurança como essa expressão se relaciona com a ação. Nenhuma pontuação foi atribuída.`;
+    }
+    if (status === 'ABSTENCAO_CATEGORIA_GRAMATICAL') {
+      return 'Uma correspondência lexical não corresponde à classe gramatical estimada para a palavra na frase. O sistema preferiu não pontuar.';
+    }
+    if (status === 'ABSTENCAO_ALVO') {
+      return 'O SentiLex exige a indicação manual de N0 ou N1. Sem ela, o sistema não determina qual alvo lexical está sendo consultado.';
+    }
+    if (status === 'SEM_COBERTURA') {
+      return 'Não foram identificadas correspondências lexicais suficientes para esta consulta. Isso não permite concluir que a frase é neutra.';
+    }
+    if (status === 'ABSTENCAO_LEXICAL') {
+      return 'As correspondências encontradas no léxico têm conflitos ou ambiguidades que impedem uma pontuação confiável.';
+    }
+    if (status === 'ABSTENCAO_CONTEXTO') {
+      return 'Há negação ou outro modificador cujo efeito sobre a avaliação ainda não foi determinado.';
+    }
+    if (status === 'ABSTENCAO_PAPEL_SINTATICO') {
+      return 'A estrutura exigida pela hipótese contextual não foi identificada com segurança. A frase permanece sem pontuação.';
+    }
+    if (status === 'ABSTENCAO_HIPOTESE_NAO_AUTORIZADA') {
+      return 'Esta hipótese contextual precisa ser ativada explicitamente antes de produzir uma pontuação exploratória.';
+    }
+    if (status === 'PONTUACAO_EXPLORATORIA_NAO_VALIDADA') {
+      if (data.pontuacao_exploratoria === 0) {
+        return 'A pontuação exploratória resultou em zero. Isso não prova que a frase é neutra nem que não contém sentimentos.';
+      }
+      return 'Uma pontuação exploratória foi obtida a partir das correspondências lexicais e das regras selecionadas. Ela não é uma classificação validada do sentido integral da frase.';
+    }
+    return 'A consulta não permite afirmar, por si só, o sentimento da frase ou a existência de viés.';
+  }
+  function interpretacao(data, compacto = false) {
+    const filtro = data.filtragem_neutros_pos || {};
+    const descartados = Array.isArray(filtro.descartados) ? filtro.descartados : [];
+    const detalhe = descartados.length ? `<p class="interpretation-detail">O filtro ignorou a correspondência neutra ${descartados.map(x => `“${esc(x.expressao)}”`).join(', ')} por incompatibilidade gramatical. Isso não elimina outras incertezas.</p>` : '';
+    return `<section class="interpretation-panel${compacto ? ' compact' : ''}" aria-label="Explicação do resultado">
+      <h4>Como interpretar este resultado</h4>
+      <p>${esc(explicacaoResultado(data))}</p>${detalhe}
+    </section>`;
+  }
+  function coberturaNota(data, compacto = false) {
+    const cobertos = data.tokens_cobertos;
+    const totais = data.tokens_totais;
+    const detalhamento = Number.isInteger(cobertos) && Number.isInteger(totais) && totais > 0
+      ? `${cobertos} de ${totais} tokens tiveram correspondência lexical superficial. ` : '';
+    return `<p class="coverage-note${compacto ? ' compact' : ''}">${esc(detalhamento)}Cobertura lexical não é acurácia, confiança nem percentual de sentimento. Uma correspondência descartada também pode constar na cobertura.</p>`;
+  }
   function esc(value) {
     return String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
   }
@@ -115,7 +204,7 @@
   }
   function banner(status, motivos = []) {
     const [title, message, type] = STATUS[status] || ['Resultado exploratório', 'Interpretação limitada pelo protocolo experimental.', 'warn'];
-    const causes = Array.isArray(motivos) && motivos.length ? ` Motivos: ${motivos.map(esc).join(', ')}.` : '';
+    const causes = Array.isArray(motivos) && motivos.length ? ` Motivos: ${razoesHumanas(motivos).map(esc).join(' ')}` : '';
     return `<div class="status-banner ${type === 'ok' ? '' : 'warn'}"><strong>${esc(title)}</strong><span>${esc(message)}${causes}</span></div>`;
   }
   function metric(label, value, progress = null) {
@@ -145,19 +234,19 @@
     const checagens = Array.isArray(data.checagens_contextuais) ? data.checagens_contextuais : [];
     const filtro = data.filtragem_neutros_pos || {};
     const descartados = Array.isArray(filtro.descartados) ? filtro.descartados : [];
-    const linhas = checagens.map(x => `<tr><td>${esc(x.expressao)}</td><td>${esc(x.pos || '—')}</td><td>${esc(x.papel_hipotetico || '—')}</td><td>${esc(x.motivo || 'Sem bloqueio gramatical')}</td></tr>`).join('');
+    const linhas = checagens.map(x => `<tr><td>${esc(x.expressao)}</td><td>${esc(nomePos(x.pos))}</td><td>${esc(nomePapel(x.papel_hipotetico))}</td><td>${esc(x.motivo ? explicarMotivo(x.motivo) : 'Sem impedimento gramatical nesta correspondência')}</td></tr>`).join('');
     return `<div class="result-block context-panel"><h4>Diagnóstico contextual V04</h4>
-      <p class="field-hint">Pistas sintáticas são estimativas, não comprovação do sentido ou do alvo.</p>
-      ${descartados.length ? `<p class="context-discarded">Correspondências neutras descartadas por incompatibilidade: ${descartados.map(x => esc(x.expressao)).join(', ')}.</p>` : ''}
-      ${checagens.length ? `<div class="context-table-wrap"><table class="term-table context-table"><thead><tr><th>Termo</th><th>PoS</th><th>Papel estimado</th><th>Observação</th></tr></thead><tbody>${linhas}</tbody></table></div>` : '<p class="field-hint">Nenhuma checagem sintática disponível.</p>'}
+      <p class="field-hint">As categorias e ligações são estimativas do analisador linguístico, não confirmação do significado da frase ou do alvo N0/N1.</p>
+      ${descartados.length ? `<p class="context-discarded">Entradas neutras ignoradas na decisão por incompatibilidade gramatical: ${descartados.map(x => esc(x.expressao)).join(', ')}.</p>` : ''}
+      ${checagens.length ? `<div class="context-table-wrap"><table class="term-table context-table"><thead><tr><th>Termo</th><th>Classe gramatical estimada</th><th>Ligação estimada</th><th>Observação</th></tr></thead><tbody>${linhas}</tbody></table></div>` : '<p class="field-hint">Nenhuma checagem sintática disponível.</p>'}
     </div>`;
   }
   function renderSingle(data) {
     const score = num(data.pontuacao_exploratoria);
     const cls = data.classe_exploratoria || 'Abstenção';
     return header('Resultado da análise', 'Consulta lexical e soma exploratória, quando permitida.') +
-      banner(data.status, data.motivos) +
-      `<div class="metrics">${metric('Pontuação (exploratória)', score)}${metric('Classe (exploratória)', cls)}${metric('Cobertura superficial', pct(data.cobertura_superficial), data.cobertura_superficial)}</div>` +
+      banner(data.status, data.motivos) + interpretacao(data) +
+      `<div class="metrics">${metric('Pontuação (exploratória)', score)}${metric('Classe (exploratória)', cls)}${metric('Cobertura lexical superficial', pct(data.cobertura_superficial), data.cobertura_superficial)}</div>` + coberturaNota(data) +
       `<div class="result-block"><h4>Termos pontuados</h4>${termsTable(data.termos_pontuados)}</div>` +
       `<div class="result-block"><h4>Termos sem correspondência</h4>${chips(data.termos_sem_correspondencia)}</div>` +
       ((data.marcadores_de_negacao || []).length || (data.marcadores_de_modificacao || []).length ? `<div class="result-block"><h4>Marcadores contextuais detectados</h4>${chips([...(data.marcadores_de_negacao || []), ...(data.marcadores_de_modificacao || [])])}</div>` : '') +
@@ -171,15 +260,15 @@
     const status = abstained ? 'Abstenção — sem pontuação' : 'Pontuação exploratória';
     const coverage = typeof data.cobertura_superficial === 'number' ? data.cobertura_superficial : 0;
     const reasons = (Array.isArray(data.motivos) && data.motivos.length)
-      ? `<p class="compare-reasons">Motivos: ${esc(data.motivos.join(', '))}</p>` : '';
+      ? `<p class="compare-reasons">${razoesHumanas(data.motivos).map(esc).join(' ')}</p>` : '';
     return `<article class="compare-card ${labelClass}">
       <div class="mini-kicker">${esc(label.toUpperCase())}</div>
       <h4>${esc(data.texto)}</h4>
       <div class="compare-score-label">${esc(status)}</div>
       <div class="compare-score">${esc(score)}</div>
       <div class="compare-caption">${esc(data.classe_exploratoria ? data.classe_exploratoria + ' (exploratória)' : 'Sem classificação automática')}</div>
-      <div class="compare-coverage"><div class="compare-coverage-label"><span>Cobertura superficial</span><strong>${esc(pct(data.cobertura_superficial))}</strong></div><div class="meter" role="meter" aria-label="Cobertura superficial — ${esc(label)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(coverage * 100)}"><span style="width:${Math.max(0,Math.min(100,coverage*100))}%"></span></div></div>
-      ${reasons}<div class="small-meta">Status técnico: ${esc(data.status)}</div>
+      <div class="compare-coverage"><div class="compare-coverage-label"><span>Cobertura lexical superficial</span><strong>${esc(pct(data.cobertura_superficial))}</strong></div><div class="meter" role="meter" aria-label="Cobertura superficial — ${esc(label)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(coverage * 100)}"><span style="width:${Math.max(0,Math.min(100,coverage*100))}%"></span></div></div>
+      ${reasons}${interpretacao(data, true)}${coberturaNota(data, true)}
       <div class="compare-terms"><h5>Termos pontuados</h5>${termsTable(data.termos_pontuados, true)}</div>
       ${contextual(data)}
       </article>`;
@@ -193,7 +282,7 @@
         ? 'Este par não apresentou diferença na soma exploratória; isso não demonstra ausência de viés.'
         : 'Há diferença na soma exploratória deste par, sem inferência causal ou estatística de viés.';
     return header('Comparação de referências de gênero', 'Resultado descritivo e não validado cientificamente.') +
-      `<div class="compare-guidance" role="note"><strong>Interpretação responsável</strong><span>A equivalência semântica ainda não foi revisada por humanos. As pontuações não estimam viés de gênero.</span></div>` +
+      `<div class="compare-guidance" role="note"><strong>Interpretação responsável</strong><span>A equivalência semântica dos textos digitados não foi verificada. A diferença exibida, quando calculável, é apenas descritiva e não mede viés de gênero.</span></div>` +
       `<div class="compare-results">${compareCard(data.feminina,'Referência feminina')}${compareCard(data.masculina,'Referência masculina')}</div>` +
       `<div class="delta-panel"><div><span class="delta-label">Diferença descritiva (feminino − masculino)</span><p>${esc(deltaExplainer)}</p></div><strong>${esc(delta)}</strong></div>` +
       `<div class="soft-note">${esc(data.aviso || 'Nenhum resultado isolado constitui evidência de viés.')}</div>` +
