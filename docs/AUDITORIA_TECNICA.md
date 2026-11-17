@@ -70,3 +70,11 @@ O fluxo automático apontou inicialmente duas classes de falha:
 Na execução [44144938794](https://github.com/waness4/sentivis-tcc/actions/runs/44144938794), as matrizes **Linux e Windows foram concluídas com sucesso** em Python 3.13. Esse resultado valida os testes automatizados daquele commit, não a qualidade científica do método. Uma correção posterior no gerador histórico de CSS exige observar também o resultado das execuções subsequentes.
 
 Não houve alteração dos dados de controle, das métricas científicas, das regras de classificação ou dos bloqueios de avaliação reservada.
+
+## Ambiente de referência e rastreabilidade das dependências
+
+A execução [Execução 44145121330](https://github.com/waness4/sentivis-tcc/actions/runs/44145121330), de **17/11/2026**, apresentou **590 testes aprovados no Linux e 590 no Windows**, sem testes ignorados. Houve um aviso de biblioteca em cada sistema; os resultados de execução devem ser interpretados no contexto das versões efetivamente instaladas.
+
+O arquivo [`backend/constraints-ci.txt`](../backend/constraints-ci.txt) fixa somente quatro dependências diretas observadas naquela execução: FastAPI 0.163.1, Uvicorn 0.54.0, pytest 9.2.0 e HTTPX 0.28.1. O GitHub Actions instala com essa restrição, executa `pip check` e registra a saída de `pip freeze --all` como artefato separado por sistema. Essas restrições não congelam todas as dependências transitivas e **não** incluem o modelo `pt_core_news_sm` utilizado opcionalmente no método V04.
+
+Para reprodução científica definitiva, ainda é necessário congelar e conservar um manifesto integral de ambiente e hashes de recursos autorizados na mesma versão da execução aprovada, respeitando as decisões metodológicas e a custódia dos dados.

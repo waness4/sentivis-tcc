@@ -19,8 +19,10 @@ py -3.13 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 
 python -m pip install --upgrade pip
-python -m pip install -r backend/requirements-dev.txt
+python -m pip install -r backend/requirements-dev.txt -c backend/constraints-ci.txt
 ```
+
+O arquivo `backend/constraints-ci.txt` fixa as **dependências diretas** usadas na verificação automática; as dependências transitivas e o ambiente instalado são registrados por execução no GitHub Actions. Isso não constitui, isoladamente, um lockfile integral nem congela o modelo spaCy. Para instalação sem as restrições de referência, omita `-c backend/constraints-ci.txt`.
 
 O código e a documentação deste repositório estão disponíveis publicamente. Os léxicos de terceiros e os dados reservados da avaliação não são distribuídos.
 
@@ -39,7 +41,7 @@ O modelo treinado não deve ser substituído por um pipeline vazio. Registre a v
 python -m pytest backend/tests -q -rs
 ```
 
-A última execução informada em 17/11/2026 teve **584 aprovados, 2 ignorados**. Esses números não são garantia de que o estado atual produzirá o mesmo resultado. Os dois testes ignorados são relacionados a links simbólicos em Windows. Os ensaios sintéticos não usam a avaliação reservada.
+O registro verificado de **17/11/2026** ([Execução 44145121330](https://github.com/waness4/sentivis-tcc/actions/runs/44145121330)) aponta **590 testes aprovados no Linux e 590 no Windows**, com um aviso de biblioteca em cada ambiente. Consulte as execuções atuais e seus artefatos de dependências no [GitHub Actions](https://github.com/waness4/sentivis-tcc/actions/workflows/testes.yml). Esses resultados não garantem aprovação em versões futuras nem validam cientificamente o método. Os testes não utilizam o conjunto reservado.
 
 ## 4. Abrir a interface
 

@@ -29,7 +29,7 @@ O SentiVis reúne rotinas de auditoria e curadoria de léxicos de sentimentos em
 3. Mostrar a seleção de léxico, a análise de frase e a comparação descritiva com **exemplos públicos**, nunca com a partição reservada.
 4. Explicar que o acesso aos resultados de consulta exige os léxicos originais obtidos separadamente e a curadoria com integridade verificada.
 
-A última execução informada em 17/11/2026 registrou **584 testes aprovados e 2 ignorados**. Esse número não foi revalidado nesta revisão de documentação e não equivale a validação científica.
+Na [Execução 44145121330](https://github.com/waness4/sentivis-tcc/actions/runs/44145121330), em **17/11/2026**, houve **590 testes aprovados no Linux e 590 no Windows**, com Python 3.13 e um aviso de biblioteca por ambiente. Isso demonstra verificação técnica naquele commit, não validação científica. A reprodução de dependências está documentada no [guia de execução](GUIA_EXECUCAO.md).
 
 ## 4. Como interpretar as evidências
 

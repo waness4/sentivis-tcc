@@ -91,7 +91,7 @@ As quantidades foram obtidas dos relatórios `relatorio_auditoria.json` e `relat
 
 </details>
 
-**Testes:** a última execução informada em **17/11/2026** registrou **584 aprovados e 2 ignorados**. Os dois ignorados envolvem verificações de links simbólicos no Windows. Testes de software não medem acurácia linguística nem demonstram mitigação de viés. O resultado atualizado depende de executar a suíte no ambiente atual.
+**Testes:** em **17/11/2026**, a suíte automatizada registrou **590 aprovados no Linux e 590 no Windows** com Python 3.13 ([Execução 44145121330](https://github.com/waness4/sentivis-tcc/actions/runs/44145121330)); cada execução apresentou um aviso de dependência. São testes técnicos, não avaliação de acurácia linguística nem demonstração de mitigação de viés. O ambiente reprodutível e as dependências estão descritos no [guia de execução](docs/GUIA_EXECUCAO.md).
 
 ## Interface e capturas
 

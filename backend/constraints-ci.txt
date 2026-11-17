@@ -1,0 +1,6 @@
+# Versões diretas observadas na execução CI 44145121330 (17/11/2026).
+# Não é um lockfile completo. As dependências transitivas são registradas por execução.
+fastapi==0.163.1
+uvicorn==0.54.0
+pytest==9.2.0
+httpx==0.28.1

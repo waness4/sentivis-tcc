@@ -29,7 +29,21 @@ jobs:
           python-version: '3.13'
 
       - name: Instalar dependências de teste
-        run: python -m pip install -r backend/requirements-dev.txt
+        run: python -m pip install -r backend/requirements-dev.txt -c backend/constraints-ci.txt
+
+      - name: Registrar ambiente e verificar dependências
+        run: |
+          python --version
+          python -m pip check
+          python -m pip freeze --all > dependencias-instaladas.txt
 
       - name: Executar testes sem dados reservados
         run: python -m pytest backend/tests -q -rs
+
+      - name: Arquivar dependências instaladas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependencias-${{ matrix.os }}
+          path: dependencias-instaladas.txt
+          if-no-files-found: warn
