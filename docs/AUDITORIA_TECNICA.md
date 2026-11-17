@@ -31,3 +31,13 @@ Foram conferidos a árvore do repositório, a API principal (`backend/main.py`),
 5. Validar visualmente a aplicação em diferentes tamanhos de tela e conferir acessibilidade e comportamento em navegadores.
 
 **Limite desta etapa:** não foi possível executar o projeto localmente a partir do repositório remoto no ambiente desta revisão. Portanto, a contagem de testes registrada anteriormente não foi revalidada aqui.
+
+## Continuação — métricas, anotação e executor experimental
+
+Inspeção estática dos arquivos `backend/metricas_exploratorias.py`, `backend/anotacao_controles_v01.py`, `backend/revisao_humana.py`, `backend/politica_ausencias_bloco36.py` e `backend/executor_avaliacao_bloco37.py`, acompanhada da identificação dos testes de métricas e do executor do Bloco 37.
+
+**Verificações positivas de código:** o cálculo descritivo separa ausência de pontuação de zero; valida o delta apenas para pares pontuados e registra denominadores. O executor de avaliação possui função `executar_final` que lança `PermissionError`, e seu modo de simulação confere conteúdo contra uma fixture artificial. Os testes contêm cenários para rejeitar dados malformados, impedir a execução final pela CLI e verificar abstenções.
+
+**Pendência técnica identificada:** em `backend/metricas_exploratorias.py`, `_salvar_resultados` grava o arquivo JSON antes do CSV. Uma falha durante a escrita do segundo arquivo pode deixar uma saída parcial. Recomenda-se implementar escrita em arquivos temporários, verificação de conclusão e política de publicação/limpeza de falhas, com testes que simulem erros de I/O, sem modificar registros de pesquisa. A existência do par JSON/CSV não deve ser tratada como prova de conclusão bem-sucedida sem validação.
+
+**Limite da verificação:** a leitura foi estática e seletiva; não houve execução dos testes nem inspeção integral de todos os ramos de cada módulo. O resultado desta seção não representa autorização acadêmica nem comprovação de segurança em produção. Os procedimentos da avaliação reservada continuam bloqueados.
