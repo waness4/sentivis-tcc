@@ -160,6 +160,7 @@ sentivis-tcc/
 ## Documentação
 
 - **[Roteiro de leitura para a banca](docs/ROTEIRO_BANCA.md)** — escopo, demonstração, evidências e limites de interpretação.
+- **[Auditoria técnica inicial](docs/AUDITORIA_TECNICA.md)** — verificações estáticas, ajustes e validações pendentes.
 - **[Guia de execução e testes](docs/GUIA_EXECUCAO.md)**
 - **[Documentação acadêmica](docs/README.md)**
 - **[Dados, privacidade e publicação](docs/SEGURANCA_E_DADOS.md)**
