@@ -3,8 +3,6 @@ import csv
 import json
 import sys
 from copy import deepcopy
-from pathlib import Path
-
 import backend.metricas_exploratorias as metricas
 
 import pytest
