@@ -94,3 +94,9 @@ A CLI `python -m backend.pares_piloto` gravava `--saida` com `write_text`, que p
 A correção não muda a seleção dos pares, os resultados descritivos, o conteúdo dos protocolos nem as restrições de avaliação final. O relatório ainda pode conter informações do CSV de entrada em mensagens de erro; portanto, os arquivos de saída devem permanecer em locais protegidos, nunca ser publicados automaticamente.
 
 **Validação da correção do piloto:** a [execução 44146555269](https://github.com/waness4/sentivis-tcc/actions/runs/44146555269) concluiu **596 testes aprovados em cada sistema (Linux e Windows)**, com um aviso de dependência por sistema. Os resultados atestam a suíte técnica nesse commit, não validade científica.
+
+## Anotação dos controles — falhas de escrita e proteção de artefatos
+
+A rotina de criação das duas fichas de controles e a consolidação CSV/JSON são agora publicadas por uma função compartilhada que confirma caminhos distintos e ausência de destinos existentes antes da primeira gravação. Se a segunda escrita lançar uma exceção tratada, a primeira saída criada é removida. Três testes artificiais cobrem falhas na segunda ficha, falha no JSON da consolidação e colisão entre destinos. Os arquivos de entrada e as anotações existentes não são substituídos.
+
+O `.gitignore` passa a negar por padrão novos arquivos CSV e JSON em `data/piloto/`, independentemente dos nomes, preservando explicitamente os três exemplos/modelos públicos já versionados. **Limites:** `.gitignore` não protege arquivos já rastreados nem impede um `git add -f`; e a reversão de escritas não equivale a atomicidade contra interrupções abruptas. Revisar `git status` e `git diff --cached` antes de qualquer publicação.

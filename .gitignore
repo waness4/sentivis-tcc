@@ -35,6 +35,13 @@ Thumbs.db
 /data/piloto/*revisad*.csv
 /data/piloto/*anotad*.csv
 
+# Resultados locais gerados no piloto, inclusive nomes fora dos padrões anteriores
+/data/piloto/**/*.json
+/data/piloto/**/*.csv
+!/data/piloto/modelo_pares_para_revisao.csv
+!/data/piloto/pares_exemplos.csv
+!/data/piloto/plano_amostragem_pesquisador_v01.csv
+
 # Compactações e exportações temporárias
 *.zip
 *.7z

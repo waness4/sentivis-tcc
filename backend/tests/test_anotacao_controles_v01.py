@@ -201,3 +201,56 @@ def teste_kappa_nominal_exato():
     assert _kappa(['positiva', 'negativa'], ['positiva', 'negativa']) == 1.0
     assert _kappa(['positiva','negativa'], ['negativa','positiva']) == -1.0
     assert _kappa(['neutra']*3, ['neutra']*3) is None
+
+
+
+def test_falha_na_segunda_ficha_remove_primeira(tmp_path, fonte, monkeypatch):
+    import backend.anotacao_controles_v01 as modulo
+    controles, sha = fonte
+    saida = tmp_path / "restrito"
+    original = modulo._escrever_novo
+    chamadas = 0
+
+    def falhar_segunda(path, texto):
+        nonlocal chamadas
+        chamadas += 1
+        if chamadas == 2:
+            raise OSError("falha simulada na segunda ficha")
+        return original(path, texto)
+
+    monkeypatch.setattr(modulo, "_escrever_novo", falhar_segunda)
+    with pytest.raises(OSError, match="falha simulada"):
+        preparar(controles, saida, sha_origem=sha)
+    assert chamadas == 2
+    assert not list(saida.glob("ficha_controles_*.csv"))
+
+
+def test_falha_no_segundo_relatorio_remove_csv(fichas, monkeypatch):
+    import backend.anotacao_controles_v01 as modulo
+    pasta, controles, sha = fichas
+    for codigo in ("R01", "R02"):
+        preencher(pasta / f"ficha_controles_{codigo}_v01.csv")
+    csv_saida, json_saida = pasta / "result.csv", pasta / "result.json"
+    antes = {p.name: p.read_bytes() for p in pasta.glob("ficha_controles_*.csv")}
+    original = modulo._escrever_novo
+
+    def falhar_json(path, texto):
+        if path == json_saida:
+            raise OSError("falha simulada no JSON")
+        return original(path, texto)
+
+    monkeypatch.setattr(modulo, "_escrever_novo", falhar_json)
+    with pytest.raises(OSError, match="falha simulada"):
+        consolidar(controles, pasta / "ficha_controles_R01_v01.csv",
+                   pasta / "ficha_controles_R02_v01.csv",
+                   csv_saida, json_saida, sha_origem=sha)
+    assert not csv_saida.exists() and not json_saida.exists()
+    assert {p.name: p.read_bytes() for p in pasta.glob("ficha_controles_*.csv")} == antes
+
+
+def test_conjunto_rejeita_destinos_iguais_sem_escrever(tmp_path):
+    from backend.anotacao_controles_v01 import _escrever_conjunto
+    destino = tmp_path / "mesmo.csv"
+    with pytest.raises(ValueError, match="distintos"):
+        _escrever_conjunto([(destino, "A"), (destino, "B")])
+    assert not destino.exists()

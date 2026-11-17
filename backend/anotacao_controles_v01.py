@@ -45,6 +45,26 @@ def _escrever_novo(path: Path, txt: str) -> None:
         f.write(txt)
 
 
+def _escrever_conjunto(saidas: list[tuple[Path, str]]) -> None:
+    """Publica um conjunto sem sobrescrever; desfaz saídas em falhas tratadas.
+
+    Não oferece atomicidade entre arquivos contra término abrupto do processo.
+    """
+    if len({caminho.resolve() for caminho, _ in saidas}) != len(saidas):
+        raise ValueError("Destinos devem ter caminhos distintos.")
+    if any(caminho.exists() for caminho, _ in saidas):
+        raise FileExistsError("Um dos arquivos de saída já existe; nenhuma saída sobrescrita.")
+    criados: list[Path] = []
+    try:
+        for caminho, texto in saidas:
+            _escrever_novo(caminho, texto)
+            criados.append(caminho)
+    except Exception:
+        for caminho in reversed(criados):
+            caminho.unlink(missing_ok=True)
+        raise
+
+
 def preparar(controles: list[dict], pasta_saida: Path, *, sha_origem: str) -> dict:
     """Gera fichas distintas sem gabarito, cenario e previsões dos baselines."""
     destinos = [pasta_saida / f"ficha_controles_{c}_v01.csv" for c in ("R01", "R02")]
@@ -63,8 +83,10 @@ def preparar(controles: list[dict], pasta_saida: Path, *, sha_origem: str) -> di
         listas.append(registros)
     if [x["id_controle"] for x in listas[0]] == [x["id_controle"] for x in listas[1]]:
         raise ValueError("Ordens de fichas não ficaram distintas.")
-    for destino, linhas in zip(destinos, listas):
-        _escrever_novo(destino, _texto_csv(linhas, COLUNAS_FICHA))
+    _escrever_conjunto([
+        (destino, _texto_csv(linhas, COLUNAS_FICHA))
+        for destino, linhas in zip(destinos, listas)
+    ])
     return {
         "metodo": METODO,
         "fase": "PREPARACAO_CEGA_CONTROLES_DIAGNOSTICOS",
@@ -190,8 +212,7 @@ def consolidar(controles: list[dict], ficha_a: Path, ficha_b: Path,
     txt_csv = _texto_csv(saida, campos)
     txt_json = json.dumps(resumo, ensure_ascii=False, indent=2) + "\n"
     # Não sobrescreve os arquivos originais; não escreve em pasta compartilhada.
-    _escrever_novo(saida_csv, txt_csv)
-    _escrever_novo(saida_json, txt_json)
+    _escrever_conjunto([(saida_csv, txt_csv), (saida_json, txt_json)])
     return resumo
 
 
