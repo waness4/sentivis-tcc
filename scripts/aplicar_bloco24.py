@@ -13,36 +13,36 @@ TEXTO_NOVO = "Interface experimental · baselines V01 e V04"
 MARCADOR_CSS = ".compare-card .term-table:not(.context-table) th:first-child,"
 ESTILOS = """
 /* O conteúdo técnico precisa continuar legível quando há dois cartões lado a lado. */
-.context-table-wrap {{
+.context-table-wrap {
   overflow-x: auto;
   max-width: 100%;
   scrollbar-width: thin;
-}}
-.context-table {{
+}
+.context-table {
   min-width: 660px;
   table-layout: auto;
-}}
+}
 /* Evita a divisão de “Termo” e “gentileza” em linhas diferentes. */
 .context-table th:first-child,
-.context-table td:first-child {{
+.context-table td:first-child {
   min-width: 88px;
   white-space: nowrap;
   word-break: normal;
   overflow-wrap: normal;
-}}
+}
 /* As colunas descritivas ainda podem quebrar frases entre palavras. */
 .context-table th:not(:first-child),
-.context-table td:not(:first-child) {{
+.context-table td:not(:first-child) {
   word-break: normal;
   overflow-wrap: break-word;
-}}
+}
 /* A tabela compacta de termos pontuados também preserva termos inteiros. */
 .compare-card .term-table:not(.context-table) th:first-child,
-.compare-card .term-table:not(.context-table) td:first-child {{
+.compare-card .term-table:not(.context-table) td:first-child {
   white-space: nowrap;
   overflow-wrap: normal;
   word-break: normal;
-}}
+}
 """.lstrip("\n")
 
 
