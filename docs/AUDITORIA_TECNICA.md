@@ -112,3 +112,7 @@ A [matriz de coerência](metodologia/MATRIZ_COERENCIA_CODIGO_METODO.md) identifi
 Os relatórios JSON originais de auditoria e curadoria, preservados na biblioteca de trabalho, foram efetivamente reabertos e confrontados com as tabelas 1–3 e os valores das seções 4.1–4.2 do artigo de revisão. As contagens e as três somas de reconciliação não apresentaram divergências; os hashes SHA-256 das fontes lexicais declarados em ambos os relatórios também coincidiram. O detalhamento e os hashes dos **arquivos JSON examinados** estão em [`resultados/CONFERENCIA_RELATORIOS_AUDITORIA_CURADORIA.md`](resultados/CONFERENCIA_RELATORIOS_AUDITORIA_CURADORIA.md).
 
 Esta etapa **não** reexecutou a auditoria nos originais lexicais, não validou as licenças e não acessou a partição reservada. Os relatórios JSON permaneceram fora do GitHub.
+
+## Revisão bibliográfica do manuscrito
+
+Foram confrontadas as nove referências do artigo de revisão com registros da ACL Anthology, PLOS ONE, B2SHARE, CRAN, PUCRS e repositório institucional. Uma inconsistência verificável no registro de dados do SentiLex-PT02 (autoria e data omitidas) foi corrigida diretamente no documento de trabalho do Google Drive, com DOI, citação autor-data no corpo e ordenação alfabética. A verificação e suas limitações estão documentadas em [`referencias/REFERENCIAS.md`](referencias/REFERENCIAS.md). Essa conferência não constitui auditoria bibliográfica de normas institucionais nem exame integral de todas as fontes.
