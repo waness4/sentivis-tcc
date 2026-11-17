@@ -116,3 +116,13 @@ Esta etapa **não** reexecutou a auditoria nos originais lexicais, não validou 
 ## Revisão bibliográfica do manuscrito
 
 Foram confrontadas as nove referências do artigo de revisão com registros da ACL Anthology, PLOS ONE, B2SHARE, CRAN, PUCRS e repositório institucional. Uma inconsistência verificável no registro de dados do SentiLex-PT02 (autoria e data omitidas) foi corrigida diretamente no documento de trabalho do Google Drive, com DOI, citação autor-data no corpo e ordenação alfabética. A verificação e suas limitações estão documentadas em [`referencias/REFERENCIAS.md`](referencias/REFERENCIAS.md). Essa conferência não constitui auditoria bibliográfica de normas institucionais nem exame integral de todas as fontes.
+
+## Inspeção visual do artigo científico — 17/11/2026
+
+Foi exportado **diretamente do Google Docs** o artigo de revisão após as atualizações metodológicas e a inclusão de exemplos lexicais. O PDF de referência possui **11 páginas A4** em duas colunas.
+
+Na inspeção visual, a Figura 1 ficou inteiramente visível na página 5; a Tabela 1 ficou inteira na página 7 e a Tabela 3, na página 8. Identificou-se quebra indevida da Tabela 2 entre duas colunas da página 8. A correção foi feita **no Google Docs de trabalho**, reduzindo somente o preenchimento interno da Tabela 2 e o espaçamento do parágrafo intermediário vazio entre a legenda e a tabela. Após nova exportação e inspeção, a **Tabela 2 inteira, incluindo a fonte, permaneceu na coluna esquerda da página 8**, sem divisão entre colunas. A formatação das demais tabelas não foi alterada. O conteúdo e os valores numéricos da Tabela 2 foram preservados.
+
+Confrontou-se também o [PPC vigente do Bacharelado em Sistemas de Informação do Ifes Colatina](https://colatina.ifes.edu.br/images/ppcs/PPC_SI_-_valido_a_partir_de_1-1-2024_atualizadoem30122025.pdf), na parte intitulada “Estrutura do TCC: Artigo Científico” (página impressa 120). O PPC prevê artigo científico e admite artefatos de software como suporte metodológico em projetos de desenvolvimento de sistemas. **Não foi comprovada por essa fonte uma exigência específica de diagramação em duas colunas.** A conformidade definitiva depende do regulamento e do modelo do curso, assim como da revisão e autorização acadêmica.
+
+A conferência é **visual e documental**: não comprova aprovação institucional do manuscrito, revisão dos direitos das figuras ou execução da partição final reservada.
