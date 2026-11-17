@@ -48,7 +48,7 @@ def _gravar_csv(caminho: Path, campos: tuple[str, ...], linhas: list[dict], *, s
     if caminho.exists() and not substituir:
         raise FileExistsError(f"Arquivo existente (não sobrescrito): {caminho}")
     caminho.parent.mkdir(parents=True, exist_ok=True)
-    with caminho.open("w", encoding="utf-8-sig", newline="") as f:
+    with caminho.open("w" if substituir else "x", encoding="utf-8-sig", newline="") as f:
         writer = csv.DictWriter(f, delimiter=";", fieldnames=campos, extrasaction="ignore")
         writer.writeheader()
         writer.writerows(linhas)
@@ -58,7 +58,8 @@ def _gravar_json(caminho: Path, valor: dict, *, substituir: bool = False) -> Non
     if caminho.exists() and not substituir:
         raise FileExistsError(f"Arquivo existente (não sobrescrito): {caminho}")
     caminho.parent.mkdir(parents=True, exist_ok=True)
-    caminho.write_text(json.dumps(valor, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    with caminho.open("w" if substituir else "x", encoding="utf-8", newline="\n") as arquivo:
+        arquivo.write(json.dumps(valor, indent=2, ensure_ascii=False) + "\n")
 
 
 def preparar(entrada: Path, pasta_saida: Path, *, substituir: bool = False) -> dict:
@@ -66,6 +67,8 @@ def preparar(entrada: Path, pasta_saida: Path, *, substituir: bool = False) -> d
     _, origem_hash, dev = _validar_fonte(entrada)
     a = pasta_saida / "ficha_revisor_A_desenvolvimento.csv"
     b = pasta_saida / "ficha_revisor_B_desenvolvimento.csv"
+    if entrada.resolve() in {a.resolve(), b.resolve()}:
+        raise ValueError("A ficha de saída não pode substituir o CSV de origem.")
     if not substituir and (a.exists() or b.exists()):
         raise FileExistsError("Fichas já existem. Não sobrescrevemos anotações por padrão.")
     fichas = [
@@ -114,6 +117,8 @@ def _ler_ficha(caminho: Path, esperado: dict[str, dict[str, str]]) -> tuple[dict
                 raise ValueError(f"{caminho.name}, linha {num}: rótulo inválido.")
             if linha["equivalencia"] == "sim" and not linha["rotulo"]:
                 raise ValueError(f"{caminho.name}, linha {num}: equivalência 'sim' exige rótulo.")
+            if linha["equivalencia"] == "nao" and linha["rotulo"]:
+                raise ValueError(f"{caminho.name}, linha {num}: não equivalência não aceita rótulo.")
             if linha["equivalencia"] == "nao" and not linha["observacoes"]:
                 raise ValueError(f"{caminho.name}, linha {num}: equivalência 'nao' exige justificativa.")
             if not linha["equivalencia"] and linha["rotulo"]:

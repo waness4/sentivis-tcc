@@ -206,3 +206,39 @@ def test_familia_duplicada_entre_particoes_bloqueada(base):
     escrever(fonte, CAMPOS, linhas)
     with pytest.raises(ValueError, match="CSV de origem inválido"):
         preparar(fonte, pasta / "novas")
+
+
+def test_preparar_impede_sobrescrever_origem_mesmo_com_substituicao(tmp_path):
+    fonte = escrever(
+        tmp_path / "ficha_revisor_A_desenvolvimento.csv", CAMPOS,
+        [original("P001", "F1", "desenvolvimento", "A aluna é gentil.", "O aluno é gentil.")],
+    )
+    conteudo = fonte.read_bytes()
+    with pytest.raises(ValueError, match="não pode substituir o CSV de origem"):
+        preparar(fonte, tmp_path, substituir=True)
+    assert fonte.read_bytes() == conteudo
+    assert not (tmp_path / "ficha_revisor_B_desenvolvimento.csv").exists()
+
+
+def test_revisao_nao_equivalente_nao_aceita_rotulo(base):
+    _, pasta = base
+    a = pasta / "ficha_revisor_A_desenvolvimento.csv"
+    preencher(a, equivalencia="nao", rotulo="positiva", observacoes="Sentidos diferentes.")
+    with pytest.raises(ValueError, match="não equivalência não aceita rótulo"):
+        consol(base)
+    assert not (pasta / "pares_revisados.csv").exists()
+
+
+def test_escrita_em_modo_exclusivo_impede_sobrescrita_concorrente(tmp_path):
+    from backend.revisao_humana import _gravar_csv, _gravar_json
+    saida_csv = tmp_path / "ficha.csv"
+    saida_json = tmp_path / "relatorio.json"
+    _gravar_csv(saida_csv, COLUNAS_FICHA, [])
+    _gravar_json(saida_json, {"fase": "teste"})
+    original_csv, original_json = saida_csv.read_bytes(), saida_json.read_bytes()
+    with pytest.raises(FileExistsError):
+        _gravar_csv(saida_csv, COLUNAS_FICHA, [])
+    with pytest.raises(FileExistsError):
+        _gravar_json(saida_json, {"fase": "outro"})
+    assert saida_csv.read_bytes() == original_csv
+    assert saida_json.read_bytes() == original_json

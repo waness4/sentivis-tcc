@@ -80,3 +80,9 @@ O arquivo [`backend/constraints-ci.txt`](../backend/constraints-ci.txt) fixa som
 Para reprodução científica definitiva, ainda é necessário congelar e conservar um manifesto integral de ambiente e hashes de recursos autorizados na mesma versão da execução aprovada, respeitando as decisões metodológicas e a custódia dos dados.
 
 **Validação do ambiente de referência:** na [execução 44145626554](https://github.com/waness4/sentivis-tcc/actions/runs/44145626554), os dois jobs (Linux e Windows) terminaram com sucesso, inclusive instalação com restrições, `pip check`, execução dos testes e envio dos artefatos `dependencias-ubuntu-latest` e `dependencias-windows-latest`. Os arquivos registram as dependências instaladas naquela execução, mas não incluem os léxicos originais nem o modelo opcional da V04.
+
+## Revisão humana — proteções adicionais de integridade
+
+Foi identificada a possibilidade de `preparar(..., substituir=True)` utilizar como destino da ficha A ou B o próprio caminho do CSV de origem. O código agora rejeita essa colisão **antes da primeira escrita**. As funções de gravação utilizam modo exclusivo (`x`) quando a substituição não é explicitamente solicitada, reduzindo a janela de sobrescrita concorrente. A validação de ficha também rejeita rótulo preenchido para equivalência marcada como `nao`, evitando anotações contraditórias. Três testes de regressão com dados artificiais documentam essas regras.
+
+Esses ajustes se aplicam apenas ao fluxo de revisão de desenvolvimento. Não habilitam avaliação final, não modificam o protocolo científico e exigem confirmação da suíte automatizada no Linux e Windows.
