@@ -41,7 +41,7 @@ O modelo treinado não deve ser substituído por um pipeline vazio. Registre a v
 python -m pytest backend/tests -q -rs
 ```
 
-O registro verificado de **17/11/2026** ([Execução 44146555269](https://github.com/waness4/sentivis-tcc/actions/runs/44146555269)) aponta **596 testes aprovados no Linux e 596 no Windows**, com um aviso de biblioteca em cada ambiente. Consulte as execuções atuais e seus artefatos de dependências no [GitHub Actions](https://github.com/waness4/sentivis-tcc/actions/workflows/testes.yml). Esses resultados não garantem aprovação em versões futuras nem validam cientificamente o método. Os testes não utilizam o conjunto reservado.
+O registro verificado de **17/11/2026** ([Execução 44150590578](https://github.com/waness4/sentivis-tcc/actions/runs/44150590578)) aponta **599 testes aprovados no Linux e 599 no Windows**, com um aviso de biblioteca em cada ambiente. Consulte as execuções atuais e seus artefatos de dependências no [GitHub Actions](https://github.com/waness4/sentivis-tcc/actions/workflows/testes.yml). Esses resultados não garantem aprovação em versões futuras nem validam cientificamente o método. Os testes não utilizam o conjunto reservado.
 
 ## 4. Abrir a interface
 
@@ -119,3 +119,7 @@ Abstenção não é classe neutra. Um zero de pontuação não significa, por si
 A interface e os comandos descritos aqui **não** abrem `data/piloto/restrito/` nem `data/piloto/avaliacao_final/`. Não execute caminhos de avaliação final, não faça hash e não inspecione esses dados sem aprovação acadêmica e protocolo congelado. O comando `executar-final` do núcleo do Bloco 37 permanece intencionalmente bloqueado.
 
 Consulte [dados e segurança](SEGURANCA_E_DADOS.md).
+
+## 10. Demonstrar para a banca
+
+Para uma sequência de apresentação com exemplos públicos, dependências, verificações e plano de contingência, consultar [DEMONSTRACAO_BANCA.md](DEMONSTRACAO_BANCA.md). A demonstração não executa a avaliação final reservada.

@@ -24,12 +24,15 @@ O SentiVis reúne rotinas de auditoria e curadoria de léxicos de sentimentos em
 
 ## 3. Demonstração reprodutível
 
+Para um roteiro de apresentação de 7–9 minutos, com exemplos públicos, checagem prévia, perguntas previsíveis e contingências, consultar o [roteiro operacional da banca](DEMONSTRACAO_BANCA.md).
+
+
 1. Seguir o [guia de execução](GUIA_EXECUCAO.md), instalar as dependências e executar `python -m pytest backend/tests -q -rs`.
 2. Iniciar `python -m uvicorn backend.ui_server:app --reload` e abrir `http://127.0.0.1:8000/`.
 3. Mostrar a seleção de léxico, a análise de frase e a comparação descritiva com **exemplos públicos**, nunca com a partição reservada.
 4. Explicar que o acesso aos resultados de consulta exige os léxicos originais obtidos separadamente e a curadoria com integridade verificada.
 
-Na [Execução 44146555269](https://github.com/waness4/sentivis-tcc/actions/runs/44146555269), em **17/11/2026**, houve **596 testes aprovados no Linux e 596 no Windows**, com Python 3.13 e um aviso de biblioteca por ambiente. Isso demonstra verificação técnica naquele commit, não validação científica. A reprodução de dependências está documentada no [guia de execução](GUIA_EXECUCAO.md).
+Na [Execução 44150590578](https://github.com/waness4/sentivis-tcc/actions/runs/44150590578), em **17/11/2026**, houve **599 testes aprovados no Linux e 599 no Windows**, com Python 3.13 e um aviso de biblioteca por ambiente. Isso demonstra verificação técnica naquele commit, não validação científica. A reprodução de dependências está documentada no [guia de execução](GUIA_EXECUCAO.md).
 
 ## 4. Como interpretar as evidências
 

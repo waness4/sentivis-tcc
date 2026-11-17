@@ -91,7 +91,7 @@ As quantidades foram obtidas dos relatórios `relatorio_auditoria.json` e `relat
 
 </details>
 
-**Testes:** em **17/11/2026**, a suíte automatizada registrou **596 aprovados no Linux e 596 no Windows** com Python 3.13 ([Execução 44146555269](https://github.com/waness4/sentivis-tcc/actions/runs/44146555269)); cada execução apresentou um aviso de dependência. São testes técnicos, não avaliação de acurácia linguística nem demonstração de mitigação de viés. O ambiente reprodutível e as dependências estão descritos no [guia de execução](docs/GUIA_EXECUCAO.md).
+**Testes:** em **17/11/2026**, a suíte automatizada registrou **599 aprovados no Linux e 599 no Windows** com Python 3.13 ([Execução 44150590578](https://github.com/waness4/sentivis-tcc/actions/runs/44150590578)); cada execução apresentou um aviso de dependência. São testes técnicos, não avaliação de acurácia linguística nem demonstração de mitigação de viés. O ambiente reprodutível e as dependências estão descritos no [guia de execução](docs/GUIA_EXECUCAO.md).
 
 ## Interface e capturas
 
@@ -159,6 +159,7 @@ sentivis-tcc/
 
 ## Documentação
 
+- **[Roteiro de demonstração para a banca](docs/DEMONSTRACAO_BANCA.md)** — sequência, exemplos públicos, contingências e respostas metodológicas.
 - **[Roteiro de leitura para a banca](docs/ROTEIRO_BANCA.md)** — escopo, demonstração, evidências e limites de interpretação.
 - **[Auditoria técnica inicial](docs/AUDITORIA_TECNICA.md)** — verificações estáticas, ajustes e validações pendentes.
 - **[Guia de execução e testes](docs/GUIA_EXECUCAO.md)**
