@@ -3,6 +3,9 @@ import csv
 import json
 import sys
 from copy import deepcopy
+from pathlib import Path
+
+import backend.metricas_exploratorias as metricas
 
 import pytest
 
@@ -267,3 +270,50 @@ def test_cli_calcular_gera_json_csv_somente_desenvolvimento(tmp_path, capsys, mo
     assert "Pares de desenvolvimento aprovados: 2" in capsys.readouterr().out
     with pytest.raises(SystemExit):
         main()  # nunca sobrescreve resultados anteriores por padrão
+
+
+def test_salvar_resultados_publica_par_completo(tmp_path):
+    json_path = tmp_path / "json" / "resultado.json"
+    csv_path = tmp_path / "csv" / "resultado.csv"
+    metricas._salvar_resultados(json_path, csv_path, {"fase": "teste_sintetico"}, [])
+    assert json.loads(json_path.read_text(encoding="utf-8"))["fase"] == "teste_sintetico"
+    with csv_path.open(encoding="utf-8-sig", newline="") as arquivo:
+        assert list(csv.DictReader(arquivo, delimiter=";")) == []
+    assert not list(tmp_path.rglob(".sentivis-*.tmp"))
+
+
+def test_salvar_resultados_rejeita_csv_malformado_sem_criar_destinos(tmp_path):
+    json_path, csv_path = tmp_path / "resultado.json", tmp_path / "resultado.csv"
+    with pytest.raises(ValueError):
+        metricas._salvar_resultados(json_path, csv_path, {"fase": "teste"}, [{"campo_indevido": 1}])
+    assert not json_path.exists() and not csv_path.exists()
+    assert not list(tmp_path.rglob(".sentivis-*.tmp"))
+
+
+def test_salvar_resultados_falha_na_segunda_publicacao_reverte_a_primeira(tmp_path, monkeypatch):
+    json_path, csv_path = tmp_path / "resultado.json", tmp_path / "resultado.csv"
+    original_link = metricas.os.link
+    chamadas = 0
+
+    def falhar_no_segundo_link(origem, destino):
+        nonlocal chamadas
+        chamadas += 1
+        if chamadas == 2:
+            raise OSError("falha simulada ao publicar CSV")
+        return original_link(origem, destino)
+
+    monkeypatch.setattr(metricas.os, "link", falhar_no_segundo_link)
+    with pytest.raises(OSError, match="falha simulada"):
+        metricas._salvar_resultados(json_path, csv_path, {"fase": "teste"}, [])
+    assert chamadas == 2
+    assert not json_path.exists() and not csv_path.exists()
+    assert not list(tmp_path.rglob(".sentivis-*.tmp"))
+
+
+def test_salvar_resultados_nao_sobrescreve_destino_existente(tmp_path):
+    json_path, csv_path = tmp_path / "resultado.json", tmp_path / "resultado.csv"
+    json_path.write_text("original", encoding="utf-8")
+    with pytest.raises(ValueError, match="já existem"):
+        metricas._salvar_resultados(json_path, csv_path, {"fase": "teste"}, [])
+    assert json_path.read_text(encoding="utf-8") == "original"
+    assert not csv_path.exists()

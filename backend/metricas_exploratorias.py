@@ -8,6 +8,9 @@ from __future__ import annotations
 
 import argparse
 import csv
+import io
+import os
+import tempfile
 import json
 import math
 from collections import Counter
@@ -282,14 +285,40 @@ def _salvar_resultados(saida_json: Path, saida_csv: Path, resumo: dict, linhas: 
     _exigir(saida_json.resolve() != saida_csv.resolve(), "Destinos JSON/CSV devem ser diferentes.")
     _exigir(not saida_json.exists() and not saida_csv.exists(),
             "Arquivos de saída já existem. Use nomes novos para preservar a rastreabilidade.")
-    for destino in (saida_json, saida_csv):
-        destino.parent.mkdir(parents=True, exist_ok=True)
-    # Evita CSV parcialmente escrito ao falhar por cabeçalho inválido.
-    saida_json.write_text(json.dumps(resumo, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    with saida_csv.open("w", encoding="utf-8-sig", newline="") as arquivo:
-        writer = csv.DictWriter(arquivo, fieldnames=COLUNAS_CSV, delimiter=";")
-        writer.writeheader()
-        writer.writerows(linhas)
+    # Validar e serializar integralmente ambas as saídas antes de criar qualquer destino.
+    conteudo_json = (json.dumps(resumo, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    buffer_csv = io.StringIO(newline="")
+    writer = csv.DictWriter(buffer_csv, fieldnames=COLUNAS_CSV, delimiter=";")
+    writer.writeheader()
+    writer.writerows(linhas)
+    conteudo_csv = buffer_csv.getvalue().encode("utf-8-sig")
+
+    temporarios: list[Path] = []
+    publicados: list[Path] = []
+    try:
+        for destino, conteudo in ((saida_json, conteudo_json), (saida_csv, conteudo_csv)):
+            destino.parent.mkdir(parents=True, exist_ok=True)
+            with tempfile.NamedTemporaryFile(
+                mode="wb", prefix=".sentivis-", suffix=".tmp",
+                dir=destino.parent, delete=False,
+            ) as temporario:
+                temporarios.append(Path(temporario.name))
+                temporario.write(conteudo)
+                temporario.flush()
+                os.fsync(temporario.fileno())
+
+        # Cada hard link publica um arquivo completo sem sobrescrever destinos existentes.
+        # Se a segunda publicação falhar, remover a primeira criada nesta operação.
+        for origem, destino in zip(temporarios, (saida_json, saida_csv)):
+            os.link(origem, destino)
+            publicados.append(destino)
+    except BaseException:
+        for destino in reversed(publicados):
+            destino.unlink(missing_ok=True)
+        raise
+    finally:
+        for temporario in temporarios:
+            temporario.unlink(missing_ok=True)
 
 
 def main() -> None:
