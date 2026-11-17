@@ -41,3 +41,15 @@ Os indicadores adicionais citados no corpo do artigo também coincidem com os ca
 **Resultado:** não foi identificada divergência entre as contagens do artigo e esses dois relatórios JSON. Trata-se de conferência documental e aritmética, **não de nova auditoria dos léxicos originais**, validação linguística dos registros, avaliação de vieses ou reexecução experimental. Para reprodução independente, os originais licenciados devem ser obtidos de fontes autorizadas e conferidos com os hashes acima, utilizando versão de código e ambiente documentados.
 
 Os 27 pares reservados e as anotações humanas privadas não foram consultados nesta conferência.
+
+## Exemplos documentados e interpretação controlada
+
+A versão de revisão do artigo científico passou a incluir três exemplos retirados dos campos de exemplos dos relatórios originais, **sem consultar ou publicar os arquivos lexicais completos**:
+
+| Origem e referência | Exemplo confirmado | Motivo de sinalização | Limite de interpretação |
+| --- | --- | --- | --- |
+| Curadoria OpLexicon, chave `fácil`, categoria `adj`, alvo `GLOBAL` | Polaridades `0` e `1` | Valores divergentes para a mesma chave normalizada | Não comprova erro lexical nem explica o contexto de cada valor |
+| Auditoria SentiLex lematizado, linha `4320` | `intrépido`, `POL:N0=7` | Polaridade fora do conjunto `{-1,0,1}` | Exige revisão da fonte; não corrigir automaticamente o valor |
+| Auditoria SentiLex flexionado, linha `1107` | `acha piada a`, `P2s\|P4s\|P3s\|Y2s` | Atributo sem chave explícita para o esquema de leitura | Não determina erro linguístico; pode refletir convenção do recurso |
+
+Esses exemplos sustentam **somente** a descrição dos comportamentos de auditoria e triagem, não uma conclusão sobre qualidade comparativa dos léxicos ou viés de gênero. Os relatórios locais originais permanecem fora do repositório; os pares reservados não foram consultados.
