@@ -7,4 +7,4 @@
 
 **Essas duas cópias não foram comparadas para confirmar que têm exatamente o mesmo conteúdo.** Conservar como histórico. Antes de definir a versão corrente, conferir com o arquivo local mais atualizado e registrar a origem/data.
 
-Sugestão para futuros textos: guardar a versão editável corrente nesta pasta com nome controlado e as versões aprovadas em `versoes/`, associadas a uma tag Git. Evitar modificar diretamente arquivos históricos.
+A versão acadêmica corrente deve ser identificada separadamente e validada pelos responsáveis pelo trabalho. Os arquivos em `versoes_anteriores/` permanecem como registros históricos e não devem ser confundidos com a versão aprovada para a banca.

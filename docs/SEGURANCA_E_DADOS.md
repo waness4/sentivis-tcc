@@ -35,4 +35,4 @@ Não publique exemplos da partição reservada como demonstração. Antes de env
 
 ## Licenças
 
-O código ainda não possui `LICENSE` definida. OpLexicon e SentiLex são recursos de terceiros com condições próprias. A eventual abertura pública do repositório não deverá ser realizada sem conferir dados, licenças, arquivos previamente versionados e critérios institucionais.
+O código ainda não possui `LICENSE` definida. OpLexicon e SentiLex são recursos de terceiros com condições próprias. O repositório está público. Essa visibilidade não concede licença de reutilização do código nem de redistribuição dos léxicos; qualquer nova publicação deve ser precedida de revisão dos dados, licenças, arquivos versionados e exigências institucionais.

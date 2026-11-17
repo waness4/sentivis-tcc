@@ -5,7 +5,6 @@
 @media(max-width:520px){.header-side{font-size:10px;padding-left:10px}.intro h1{font-size:49px}.intro-desc{font-size:13px}.compare-fields,.compare-results{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.metrics .metric:last-child{grid-column:1/-1}.form-bottom{align-items:stretch;flex-direction:column}.primary-btn{width:100%;justify-content:space-between}.mode-tabs{gap:18px}.method-section h2{font-size:30px}.workspace-head h2{font-size:15px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
-/* Bloco 11 — refinamento de apresentação; mantém a identidade visual original. */
 .intro{padding:44px 0 38px;align-items:center}
 .intro h1{font-size:clamp(46px,4.6vw,70px);letter-spacing:-3.9px;margin:16px 0 16px}
 .intro-desc{max-width:640px}
@@ -51,7 +50,6 @@
 @media(max-width:780px){.intro h1{font-size:clamp(45px,10vw,58px);letter-spacing:-2.8px}.intro{padding:30px 0 25px}.intro-actions{align-items:flex-start;flex-direction:column}.compare-results{grid-template-columns:1fr}.method-section{padding:52px 0}}
 @media(max-width:520px){.delta-panel{flex-direction:column;align-items:flex-start;gap:9px}.delta-panel>strong{font-size:27px}.mode-tabs{gap:13px}.mode-tabs button{font-size:12px}.hero-compare-btn{width:100%}.compare-card{padding:16px}}
 
-/* Bloco 22 — seleção explícita do método e diagnóstico contextual V04. */
 .hypothesis-label{display:flex!important;align-items:flex-start;gap:10px;line-height:1.55;cursor:pointer}
 .hypothesis-label input{margin:3px 0 0;accent-color:var(--teal);width:17px;height:17px;flex-shrink:0}
 .context-discarded{font-size:12px;line-height:1.6;color:var(--teal-dark);background:var(--light-teal);border-radius:8px;padding:9px 12px}
@@ -61,7 +59,6 @@
 .context-panel{margin-top:15px}
 .method-tag{max-width:220px;text-align:right;line-height:1.5}
 
-/* Bloco 23 — explicações acessíveis; apenas apresentação, sem alteração dos resultados. */
 .interpretation-panel{border:1px solid #dce6e1;background:#fcfdfc;border-radius:10px;padding:15px 17px;margin:16px 0}
 .interpretation-panel h4{font-size:12px;line-height:1.45;margin:0 0 7px;font-weight:750;color:var(--ink)}
 .interpretation-panel p{font-size:12px;color:#566d67;line-height:1.75;margin:0}
@@ -77,7 +74,6 @@
 .context-table td{line-height:1.55}
 @media(max-width:520px){.interpretation-panel{padding:13px 14px}.coverage-note{margin-top:0}.context-table{min-width:430px}}
 
-/* Bloco 24 — legibilidade das tabelas e navegação horizontal local. */
 /* O conteúdo técnico precisa continuar legível quando há dois cartões lado a lado. */
 .context-table-wrap {
   overflow-x: auto;

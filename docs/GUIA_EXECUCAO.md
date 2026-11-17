@@ -22,7 +22,7 @@ python -m pip install --upgrade pip
 python -m pip install -r backend/requirements-dev.txt
 ```
 
-O repositório é privado; o `git clone` requer que a conta tenha acesso.
+O código e a documentação deste repositório estão disponíveis publicamente. Os léxicos de terceiros e os dados reservados da avaliação não são distribuídos.
 
 Para utilizar o método contextual V04, instale também:
 
@@ -110,7 +110,7 @@ Abstenção não é classe neutra. Um zero de pontuação não significa, por si
 | V04 retorna indisponibilidade do modelo | Instale spaCy e execute `python -m spacy download pt_core_news_sm`. |
 | Porta 8000 ocupada | Pare a instância antiga do Uvicorn antes de iniciar outra. |
 | PowerShell bloqueia a ativação | Utilize um terminal compatível, respeitando a política de segurança local. |
-| `git clone` retorna erro de acesso | Confira a autenticação e a permissão de leitura do repositório privado. |
+| `git clone` retorna erro de acesso | Confira a URL, a conexão e a disponibilidade do GitHub; a clonagem pública não exige autenticação. |
 
 ## 9. O que nunca executar sem aprovação
 

@@ -20,7 +20,8 @@
   <a href="#executar-localmente">Como executar</a> ·
   <a href="#resultados-documentados">Resultados</a> ·
   <a href="#interface-e-capturas">Interface</a> ·
-  <a href="#documentação">Documentação</a>
+  <a href="#documentação">Documentação</a> ·
+  <a href="docs/ROTEIRO_BANCA.md">Guia para a banca</a>
 </p>
 
 ---
@@ -96,6 +97,14 @@ As quantidades foram obtidas dos relatórios `relatorio_auditoria.json` e `relat
 
 A interface web permite analisar frases, consultar a cobertura lexical e comparar referências femininas e masculinas de forma **exploratória**. As imagens abaixo são **capturas reais** da execução local, utilizando exclusivamente frases de demonstração. Não são resultados da avaliação final reservada.
 
+### Página inicial — laboratório SentiVis
+
+<p align="center">
+  <img src="docs/capturas/01-pagina-inicial.png" width="100%" alt="Página inicial do SentiVis com título, seleção de léxico e área de exploração lexical." />
+</p>
+
+<sub>Figura 1. Visão geral da interface experimental.</sub>
+
 ### Análise exploratória — OpLexicon 3.0
 
 **Exemplo:** “O atendimento foi excelente.”
@@ -106,7 +115,7 @@ A tela registra **pontuação exploratória +1**, classe exploratória **positiv
   <img src="docs/capturas/02-analise-sentimentos.png" width="100%" alt="Captura real: resultado de análise de O atendimento foi excelente, pontuação mais um e cobertura lexical de 25 por cento." />
 </p>
 
-<sub>Figura 1. Resultado de uma consulta lexical demonstrativa. Não é uma classificação validada cientificamente.</sub>
+<sub>Figura 2. Resultado de uma consulta lexical demonstrativa. Não é uma classificação validada cientificamente.</sub>
 
 ### Comparação descritiva — referências de gênero
 
@@ -118,15 +127,7 @@ Ambas as frases obtiveram **pontuação exploratória +1** e **25% de cobertura 
   <img src="docs/capturas/03-comparacao-genero.png" width="100%" alt="Captura real: comparação descritiva entre A aluna é dedicada e O aluno é dedicado, ambas com pontuação mais um e diferença zero." />
 </p>
 
-<sub>Figura 2. Comparação demonstrativa com frases artificiais, sem inferência científica de viés.</sub>
-
-### Página inicial — laboratório SentiVis
-
-A captura apresenta a página inicial do laboratório experimental, incluindo o cabeçalho, a configuração do léxico e a área de exploração.
-
-<p align="center">
-  <img src="docs/capturas/01-pagina-inicial.png" width="100%" alt="Página inicial do laboratório experimental SentiVis, mostrando cabeçalho, configuração e área de exploração lexical." />
-</p>
+<sub>Figura 3. Comparação demonstrativa com frases artificiais, sem inferência científica de viés.</sub>
 
 Consulte as [orientações de captura](docs/capturas/README.md) para evitar a exposição de dados privados.
 
@@ -149,7 +150,7 @@ sentivis-tcc/
 │   └── piloto/                  # Exemplos públicos; partição final ignorada
 ├── docs/
 │   ├── assets/                  # Identidade visual e fluxograma
-│   ├── capturas/                # Guia para screenshots reais
+│   ├── capturas/                # Capturas reais e registro visual
 │   ├── metodologia/             # Protocolos de pesquisa
 │   ├── artigo/                  # Histórico de manuscritos
 │   └── instrucoes/              # Histórico técnico por etapa
@@ -158,6 +159,7 @@ sentivis-tcc/
 
 ## Documentação
 
+- **[Roteiro de leitura para a banca](docs/ROTEIRO_BANCA.md)** — escopo, demonstração, evidências e limites de interpretação.
 - **[Guia de execução e testes](docs/GUIA_EXECUCAO.md)**
 - **[Documentação acadêmica](docs/README.md)**
 - **[Dados, privacidade e publicação](docs/SEGURANCA_E_DADOS.md)**

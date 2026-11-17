@@ -4,15 +4,13 @@ Esta pasta reúne **capturas reais do SentiVis em execução**, enviadas em 17/1
 
 | Arquivo | Conteúdo | Situação |
 | :--- | :--- | :--- |
-| [02-analise-sentimentos.png](02-analise-sentimentos.png) | OpLexicon e resultado de “O atendimento foi excelente.”: +1 e cobertura superficial 25%. | Captura recebida e publicada |
-| [03-comparacao-genero.png](03-comparacao-genero.png) | Comparação demonstrativa “A aluna é dedicada.” / “O aluno é dedicado.”: +1 para ambas, delta descritivo 0. | Captura recebida e publicada |
-| [01-pagina-inicial.png](01-pagina-inicial.png) | Página inicial do laboratório SentiVis, com cabeçalho, módulo de exploração lexical, configuração do léxico e campo de análise. | Captura recebida e publicada |
+| [01-pagina-inicial.png](01-pagina-inicial.png) | Tela inicial, configuração e área de exploração. | Publicada |
+| [02-analise-sentimentos.png](02-analise-sentimentos.png) | Consulta demonstrativa com OpLexicon; pontuação +1 e cobertura superficial 25%. | Publicada |
+| [03-comparacao-genero.png](03-comparacao-genero.png) | Comparação demonstrativa de duas frases; diferença descritiva zero. | Publicada |
 
-A segunda e a terceira imagens recebidas mostravam a **mesma captura**, portanto foi mantida uma única cópia.
+As três imagens são capturas da interface em execução e também estão apresentadas no [README principal](../../README.md#interface-e-capturas).
 
-## Página inicial registrada
-
-A captura [01-pagina-inicial.png](01-pagina-inicial.png) foi publicada com o nome padronizado e é exibida na seção **Interface e capturas** do [README principal](../../README.md#interface-e-capturas).
+## Atualização das capturas
 
 Para futuras atualizações, execute `python -m uvicorn backend.ui_server:app --reload`, abra `http://127.0.0.1:8000/` e registre a interface sem dados privados ou conteúdo reservado. Substitua o arquivo correspondente e atualize a documentação apenas quando a nova imagem refletir a versão efetivamente apresentada.
 
