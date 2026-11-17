@@ -5,6 +5,7 @@ Este diretório reúne a documentação acadêmica e técnica do SentiVis, separ
 | Onde encontrar | Conteúdo |
 | :--- | :--- |
 | [Roteiro para a banca](ROTEIRO_BANCA.md) | Escopo, demonstração, evidências disponíveis e limitações científicas. |
+| [Auditoria técnica](AUDITORIA_TECNICA.md) | Revisão estática inicial, ajustes efetuados e verificações técnicas pendentes. |
 | [Guia de execução](GUIA_EXECUCAO.md) | Ambiente Windows, instalação, testes, execução da interface e solução de problemas. |
 | [Segurança e dados](SEGURANCA_E_DADOS.md) | Materiais privados, verificação antes de commits e limites de publicação. |
 | [Capturas](capturas/README.md) | Imagens reais da interface e cuidados para novas capturas. |
