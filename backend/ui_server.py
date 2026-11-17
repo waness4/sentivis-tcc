@@ -169,7 +169,7 @@ def comparar_interface(pedido: CompararEntrada):
 def pagina_interface():
     caminho = FRONTEND / "index.html"
     if not caminho.is_file():
-        raise HTTPException(status_code=503, detail="Instale a pasta frontend do Bloco 10.")
+        raise HTTPException(status_code=503, detail="Arquivos da interface web indisponíveis. Verifique a pasta frontend.")
     return FileResponse(caminho)
 
 
