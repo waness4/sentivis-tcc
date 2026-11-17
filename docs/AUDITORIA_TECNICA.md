@@ -86,3 +86,9 @@ Para reprodução científica definitiva, ainda é necessário congelar e conser
 Foi identificada a possibilidade de `preparar(..., substituir=True)` utilizar como destino da ficha A ou B o próprio caminho do CSV de origem. O código agora rejeita essa colisão **antes da primeira escrita**. As funções de gravação utilizam modo exclusivo (`x`) quando a substituição não é explicitamente solicitada, reduzindo a janela de sobrescrita concorrente. A validação de ficha também rejeita rótulo preenchido para equivalência marcada como `nao`, evitando anotações contraditórias. Três testes de regressão com dados artificiais documentam essas regras.
 
 Esses ajustes se aplicam apenas ao fluxo de revisão de desenvolvimento. Não habilitam avaliação final, não modificam o protocolo científico e exigem confirmação da suíte automatizada no Linux e Windows.
+
+## Relatórios de auditoria do piloto — proteção contra sobrescrita
+
+A CLI `python -m backend.pares_piloto` gravava `--saida` com `write_text`, que podia substituir silenciosamente um relatório pré-existente ou até o próprio CSV informado em `--entrada`. A CLI passa a rejeitar caminhos de entrada e saída equivalentes e usa criação exclusiva (`open("x")`) para preservar relatórios anteriores. A serialização ocorre antes da abertura do destino. Três testes artificiais verificam recusa de colisão, recusa de sobrescrita e gravação válida de relatório novo.
+
+A correção não muda a seleção dos pares, os resultados descritivos, o conteúdo dos protocolos nem as restrições de avaliação final. O relatório ainda pode conter informações do CSV de entrada em mensagens de erro; portanto, os arquivos de saída devem permanecer em locais protegidos, nunca ser publicados automaticamente.

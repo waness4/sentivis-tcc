@@ -225,8 +225,12 @@ def main() -> None:
                 indices[nome] = IndiceLexical(entradas, lexico=nome)
                 manifestos[nome] = fontes
             resposta["piloto"] = executar_piloto(pares, auditoria, indices, manifestos)
+        if args.saida.resolve() == args.entrada.resolve():
+            raise ValueError("O relatório de saída não pode substituir o CSV de entrada.")
+        conteudo_relatorio = json.dumps(resposta, indent=2, ensure_ascii=False) + "\n"
         args.saida.parent.mkdir(parents=True, exist_ok=True)
-        args.saida.write_text(json.dumps(resposta, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        with args.saida.open("x", encoding="utf-8", newline="\n") as arquivo:
+            arquivo.write(conteudo_relatorio)
         print(f"Relatório: {args.saida}")
         print(f"Pares: {len(pares)}; erros estruturais: {len(auditoria['erros'])}; revisões: {auditoria['pares_por_status_revisao']}")
         if args.piloto:
@@ -234,7 +238,7 @@ def main() -> None:
         print("AVISO: nenhum teste de viés ou inferência estatística foi realizado.")
         if auditoria["erros"]:
             p.exit(2, "ERRO: existem problemas estruturais no CSV; consulte o relatório.\n")
-    except (ValueError, FileNotFoundError, UnicodeError) as exc:
+    except (ValueError, FileNotFoundError, FileExistsError, UnicodeError, OSError) as exc:
         p.exit(1, f"ERRO: {exc}\n")
 
 

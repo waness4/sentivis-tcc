@@ -1,6 +1,9 @@
 """Fixtures artificiais para testes de engenharia: NÃO são dados científicos."""
 import csv
 import json
+import sys
+
+import backend.pares_piloto as pares_piloto
 from pathlib import Path
 
 import pytest
@@ -201,3 +204,37 @@ def test_piloto_abstencao_nao_e_zero():
     assert oplex["pontuacao_feminina"] is None
     assert oplex["delta_feminino_masculino_exploratorio"] is None
     assert saida["resumo_por_lexico"]["oplexicon"]["pares_com_ao_menos_uma_abstencao"] == 1
+
+
+def test_cli_piloto_impede_sobrescrever_csv_de_entrada(tmp_path, monkeypatch):
+    entrada = tmp_path / "pares.csv"
+    salvar_csv(entrada, [par()])
+    antes = entrada.read_bytes()
+    monkeypatch.setattr(sys, "argv", ["prog", "--entrada", str(entrada), "--saida", str(entrada)])
+    with pytest.raises(SystemExit) as exc:
+        pares_piloto.main()
+    assert exc.value.code == 1
+    assert entrada.read_bytes() == antes
+
+
+def test_cli_piloto_nao_sobrescreve_relatorio_existente(tmp_path, monkeypatch):
+    entrada, saida = tmp_path / "pares.csv", tmp_path / "relatorio.json"
+    salvar_csv(entrada, [par()])
+    saida.write_text("conteudo anterior", encoding="utf-8")
+    monkeypatch.setattr(sys, "argv", ["prog", "--entrada", str(entrada), "--saida", str(saida)])
+    with pytest.raises(SystemExit) as exc:
+        pares_piloto.main()
+    assert exc.value.code == 1
+    assert saida.read_text(encoding="utf-8") == "conteudo anterior"
+
+
+def test_cli_piloto_registra_apenas_auditoria_em_saida_nova(tmp_path, monkeypatch):
+    entrada, saida = tmp_path / "pares.csv", tmp_path / "resultado" / "relatorio.json"
+    salvar_csv(entrada, [par()])
+    monkeypatch.setattr(sys, "argv", ["prog", "--entrada", str(entrada), "--saida", str(saida)])
+    pares_piloto.main()
+    resposta = json.loads(saida.read_text(encoding="utf-8"))
+    assert "auditoria" in resposta
+    assert "piloto" not in resposta
+    assert resposta["auditoria"]["total_pares"] == 1
+    assert resposta["auditoria"]["status"] == "ESTRUTURA_VALIDADA_SEM_INFERENCIA_DE_VIES"
