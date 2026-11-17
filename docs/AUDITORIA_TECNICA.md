@@ -53,3 +53,9 @@ python -m pytest backend/tests -q -rs
 ```
 
 Antes de considerar os resultados publicáveis, confirmar também o comportamento de hard links no sistema de arquivos utilizado. A operação evita sobrescrita e reverte falhas tratadas, mas não garante atomicidade de dois arquivos sob interrupção do processo. Uma futura etapa pode publicar um manifesto de conclusão, com hashes de ambos os relatórios, para distinguir conjuntos completos de artefatos órfãos.
+
+## Integração contínua — testes em dois sistemas
+
+A configuração [`.github/workflows/testes.yml`](../.github/workflows/testes.yml) foi adicionada para executar a suíte completa de testes automatizados em Python 3.13, com matrizes Linux e Windows, nas alterações de `main` e nos pull requests. A configuração inclui apenas dependências de desenvolvimento e não instala léxicos privados ou usa a partição reservada.
+
+O resultado deve ser consultado em [GitHub Actions](https://github.com/waness4/sentivis-tcc/actions/workflows/testes.yml). **A criação do fluxo não equivale à aprovação dos testes:** verificar os resultados de ambos os sistemas e registrar falhas ou testes ignorados antes de declarar a validação concluída.
