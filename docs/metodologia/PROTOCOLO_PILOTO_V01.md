@@ -1,6 +1,6 @@
 # SentiVis — Protocolo operacional do piloto v0.1
 
-**Estado:** proposta para revisão, sujeita à aprovação antes da anotação. Complementa, mas não substitui, `PROTOCOLO_REVISAO_HUMANA.md` do projeto.
+**Estado:** proposta para revisão, sujeita à aprovação antes da anotação. Complementa, mas não substitui, o procedimento documentado em [`PROTOCOLO_EXECUCAO_REVISAO_DESENVOLVIMENTO.md`](PROTOCOLO_EXECUCAO_REVISAO_DESENVOLVIMENTO.md).
 
 ## Pergunta
 
@@ -14,7 +14,7 @@ O conjunto candidato contém pares contrafactuais de gênero com alterações de
 
 1. Ler somente `ficha_revisor_A.csv` ou `ficha_revisor_B.csv`, sem consultar classificador, léxicos, plano de amostragem ou respostas do outro revisor.
 2. Para cada par, registrar `equivalencia=sim` somente quando o significado avaliativo se mantiver, alterando a referência de gênero e concordância; caso contrário `nao`. Na dúvida, registrar `nao` e justificar.
-3. Registrar um rótulo comum de sentimento (`positiva`, `negativa`, `neutra`) interpretado pelo humano; quando o par não permitir rótulo comum, deixar `rotulo` em branco, registrar observação e considerar equivalência não comprovada.
+3. Registrar um rótulo comum de sentimento (`positiva`, `negativa`, `neutra`) interpretado pelo humano; se não houver equivalência comprovada, registrar `equivalencia=nao`, **deixar `rotulo` obrigatoriamente vazio** e justificar em `observacoes`. A rotina `backend.revisao_humana._ler_ficha` rejeita a combinação `equivalencia=nao` com rótulo preenchido.
 4. Registrar problemas de naturalidade, ambiguidade de referente, ironia, polaridade dependente de contexto, formas invariáveis e quaisquer outras dúvidas.
 5. Entregar as fichas separadamente antes da comparação das respostas.
 
@@ -23,7 +23,7 @@ O conjunto candidato contém pares contrafactuais de gênero com alterações de
 - Se ambos marcaram `sim` e atribuíram o mesmo rótulo, o par fica elegível à análise de desenvolvimento, após verificação técnica.
 - Se qualquer revisor marcou `nao` ou se os rótulos divergiram, classificar como `pendente_adjudicacao` e registrar as duas respostas originais.
 - Um terceiro avaliador humano deve decidir, sem consultar saídas do SentiVis; registrar justificativa e data em arquivo separado, sem sobrescrever respostas originais.
-- A ausência de adjudicação resulta na exclusão do par de análises que exigem equivalência validada. Documentar as exclusões.
+- A ausência de adjudicação mantém o par sem aprovação para análises que exigem equivalência validada. Documentar as exclusões; a consolidação atual registra `PENDENTE_ADJUDICACAO` e não executa adjudicação por conta própria.
 
 ## Partições e congelamento
 

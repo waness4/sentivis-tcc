@@ -10,6 +10,7 @@ Este diretório reúne a documentação acadêmica e técnica do SentiVis, separ
 | [Segurança e dados](SEGURANCA_E_DADOS.md) | Materiais privados, verificação antes de commits e limites de publicação. |
 | [Capturas](capturas/README.md) | Imagens reais da interface e cuidados para novas capturas. |
 | [Metodologia](metodologia/) | Protocolos de auditoria, métodos e revisão acadêmica. |
+| [Matriz de coerência técnica e metodológica](metodologia/MATRIZ_COERENCIA_CODIGO_METODO.md) | Contratos implementados, limites e pendências de autorização. |
 | [Artigo](artigo/README.md) | Histórico de manuscritos; cópias antigas não representam a versão final. |
 | [Desenvolvimento](desenvolvimento/) | Histórico de decisões e da evolução da interface. |
 | [Instruções](instrucoes/) | Arquivo histórico da implementação por blocos; não substitui o guia vigente. |

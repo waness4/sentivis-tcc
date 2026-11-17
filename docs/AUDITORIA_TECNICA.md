@@ -100,3 +100,9 @@ A correção não muda a seleção dos pares, os resultados descritivos, o conte
 A rotina de criação das duas fichas de controles e a consolidação CSV/JSON são agora publicadas por uma função compartilhada que confirma caminhos distintos e ausência de destinos existentes antes da primeira gravação. Se a segunda escrita lançar uma exceção tratada, a primeira saída criada é removida. Três testes artificiais cobrem falhas na segunda ficha, falha no JSON da consolidação e colisão entre destinos. Os arquivos de entrada e as anotações existentes não são substituídos.
 
 O `.gitignore` passa a negar por padrão novos arquivos CSV e JSON em `data/piloto/`, independentemente dos nomes, preservando explicitamente os três exemplos/modelos públicos já versionados. **Limites:** `.gitignore` não protege arquivos já rastreados nem impede um `git add -f`; e a reversão de escritas não equivale a atomicidade contra interrupções abruptas. Revisar `git status` e `git diff --cached` antes de qualquer publicação.
+
+## Coerência entre contratos técnicos e documentos metodológicos
+
+A revisão de `PROTOCOLO_PILOTO_V01.md` e `PROTOCOLO_EXECUCAO_REVISAO_DESENVOLVIMENTO.md` corrigiu uma descrição incompatível com `backend.revisao_humana._ler_ficha`: para `equivalencia=nao`, o rótulo não é opcional; **deve estar vazio** e a justificativa deve ser preenchida. Foi corrigida também a referência a `PROTOCOLO_REVISAO_HUMANA.md`, arquivo inexistente na árvore atual, pelo documento de revisão efetivamente presente.
+
+A [matriz de coerência](metodologia/MATRIZ_COERENCIA_CODIGO_METODO.md) identifica separadamente piloto de dois revisores, proposta final de anotador único, diagnósticos com 36 controles, métricas descritivas e portões acadêmicos G01–G08. Não foram editados artefatos de evidência, resultados, dados reservados ou aprovações acadêmicas. A matriz não atesta o conteúdo de um manuscrito acadêmico externo ainda não conferido.
