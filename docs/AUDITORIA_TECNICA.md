@@ -59,3 +59,14 @@ Antes de considerar os resultados publicáveis, confirmar também o comportament
 A configuração [`.github/workflows/testes.yml`](../.github/workflows/testes.yml) foi adicionada para executar a suíte completa de testes automatizados em Python 3.13, com matrizes Linux e Windows, nas alterações de `main` e nos pull requests. A configuração inclui apenas dependências de desenvolvimento e não instala léxicos privados ou usa a partição reservada.
 
 O resultado deve ser consultado em [GitHub Actions](https://github.com/waness4/sentivis-tcc/actions/workflows/testes.yml). **A criação do fluxo não equivale à aprovação dos testes:** verificar os resultados de ambos os sistemas e registrar falhas ou testes ignorados antes de declarar a validação concluída.
+
+## Verificação por GitHub Actions — resultados observados
+
+O fluxo automático apontou inicialmente duas classes de falha:
+
+1. **Linux:** `backend/tests/test_interface_bloco24.py` exigia um comentário CSS removido na organização do repositório. O teste foi corrigido para verificar as regras de estilo relevantes e o utilitário `scripts/aplicar_bloco24.py` passou a detectar sua aplicação por seletor funcional, sem depender do comentário histórico.
+2. **Windows:** testes de integridade do arquivo `data/controles/controles_sintaticos_v01.csv` falhavam quando o checkout convertia as quebras de linha. O arquivo está protegido por `.gitattributes` com `-text`, preservando seus bytes originais no checkout. **O hash esperado não foi alterado.**
+
+Na execução [44144938794](https://github.com/waness4/sentivis-tcc/actions/runs/44144938794), a matriz Linux foi observada como **aprovada**; o resultado Windows ainda não estava concluído no momento deste registro. A validação final de ambos os ambientes deve ser consultada diretamente no GitHub Actions. Uma correção adicional no gerador histórico de CSS foi publicada em commit posterior, sujeita a nova execução.
+
+Não houve alteração dos dados de controle, das métricas científicas, das regras de classificação ou dos bloqueios de avaliação reservada.
