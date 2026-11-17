@@ -106,3 +106,9 @@ O `.gitignore` passa a negar por padrão novos arquivos CSV e JSON em `data/pilo
 A revisão de `PROTOCOLO_PILOTO_V01.md` e `PROTOCOLO_EXECUCAO_REVISAO_DESENVOLVIMENTO.md` corrigiu uma descrição incompatível com `backend.revisao_humana._ler_ficha`: para `equivalencia=nao`, o rótulo não é opcional; **deve estar vazio** e a justificativa deve ser preenchida. Foi corrigida também a referência a `PROTOCOLO_REVISAO_HUMANA.md`, arquivo inexistente na árvore atual, pelo documento de revisão efetivamente presente.
 
 A [matriz de coerência](metodologia/MATRIZ_COERENCIA_CODIGO_METODO.md) identifica separadamente piloto de dois revisores, proposta final de anotador único, diagnósticos com 36 controles, métricas descritivas e portões acadêmicos G01–G08. Não foram editados artefatos de evidência, resultados, dados reservados ou aprovações acadêmicas. A matriz não atesta o conteúdo de um manuscrito acadêmico externo ainda não conferido.
+
+## Conferência dos números apresentados no artigo
+
+Os relatórios JSON originais de auditoria e curadoria, preservados na biblioteca de trabalho, foram efetivamente reabertos e confrontados com as tabelas 1–3 e os valores das seções 4.1–4.2 do artigo de revisão. As contagens e as três somas de reconciliação não apresentaram divergências; os hashes SHA-256 das fontes lexicais declarados em ambos os relatórios também coincidiram. O detalhamento e os hashes dos **arquivos JSON examinados** estão em [`resultados/CONFERENCIA_RELATORIOS_AUDITORIA_CURADORIA.md`](resultados/CONFERENCIA_RELATORIOS_AUDITORIA_CURADORIA.md).
+
+Esta etapa **não** reexecutou a auditoria nos originais lexicais, não validou as licenças e não acessou a partição reservada. Os relatórios JSON permaneceram fora do GitHub.

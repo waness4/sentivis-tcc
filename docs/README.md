@@ -15,6 +15,7 @@ Este diretório reúne a documentação acadêmica e técnica do SentiVis, separ
 | [Desenvolvimento](desenvolvimento/) | Histórico de decisões e da evolução da interface. |
 | [Instruções](instrucoes/) | Arquivo histórico da implementação por blocos; não substitui o guia vigente. |
 | [Resultados](resultados/) | Registros de rastreabilidade já documentados. |
+| [Conferência dos relatórios originais](resultados/CONFERENCIA_RELATORIOS_AUDITORIA_CURADORIA.md) | Comparação documental das tabelas com os dois JSONs locais e seus hashes. |
 | [Referências](referencias/) | Inventário bibliográfico e materiais de apoio. |
 
 A [página principal do projeto](../README.md) reúne o escopo, a arquitetura e o estado experimental. Para reproduzir o sistema, utilize o guia de execução; os documentos numerados por bloco preservam a rastreabilidade do desenvolvimento e podem conter procedimentos superados.
