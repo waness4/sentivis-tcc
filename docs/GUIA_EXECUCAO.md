@@ -41,7 +41,7 @@ O modelo treinado não deve ser substituído por um pipeline vazio. Registre a v
 python -m pytest backend/tests -q -rs
 ```
 
-O registro verificado de **17/11/2026** ([Execução 44145121330](https://github.com/waness4/sentivis-tcc/actions/runs/44145121330)) aponta **590 testes aprovados no Linux e 590 no Windows**, com um aviso de biblioteca em cada ambiente. Consulte as execuções atuais e seus artefatos de dependências no [GitHub Actions](https://github.com/waness4/sentivis-tcc/actions/workflows/testes.yml). Esses resultados não garantem aprovação em versões futuras nem validam cientificamente o método. Os testes não utilizam o conjunto reservado.
+O registro verificado de **17/11/2026** ([Execução 44146555269](https://github.com/waness4/sentivis-tcc/actions/runs/44146555269)) aponta **596 testes aprovados no Linux e 596 no Windows**, com um aviso de biblioteca em cada ambiente. Consulte as execuções atuais e seus artefatos de dependências no [GitHub Actions](https://github.com/waness4/sentivis-tcc/actions/workflows/testes.yml). Esses resultados não garantem aprovação em versões futuras nem validam cientificamente o método. Os testes não utilizam o conjunto reservado.
 
 ## 4. Abrir a interface
 

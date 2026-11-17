@@ -91,7 +91,7 @@ As quantidades foram obtidas dos relatórios `relatorio_auditoria.json` e `relat
 
 </details>
 
-**Testes:** em **17/11/2026**, a suíte automatizada registrou **590 aprovados no Linux e 590 no Windows** com Python 3.13 ([Execução 44145121330](https://github.com/waness4/sentivis-tcc/actions/runs/44145121330)); cada execução apresentou um aviso de dependência. São testes técnicos, não avaliação de acurácia linguística nem demonstração de mitigação de viés. O ambiente reprodutível e as dependências estão descritos no [guia de execução](docs/GUIA_EXECUCAO.md).
+**Testes:** em **17/11/2026**, a suíte automatizada registrou **596 aprovados no Linux e 596 no Windows** com Python 3.13 ([Execução 44146555269](https://github.com/waness4/sentivis-tcc/actions/runs/44146555269)); cada execução apresentou um aviso de dependência. São testes técnicos, não avaliação de acurácia linguística nem demonstração de mitigação de viés. O ambiente reprodutível e as dependências estão descritos no [guia de execução](docs/GUIA_EXECUCAO.md).
 
 ## Interface e capturas
 
