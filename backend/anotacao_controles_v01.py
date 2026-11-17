@@ -42,7 +42,13 @@ def _texto_csv(rows: list[dict], columns: tuple[str, ...]) -> str:
 def _escrever_novo(path: Path, txt: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("x", encoding="utf-8", newline="") as f:
-        f.write(txt)
+        try:
+            f.write(txt)
+            f.flush()
+        except Exception:
+            f.close()
+            path.unlink(missing_ok=True)
+            raise
 
 
 def _escrever_conjunto(saidas: list[tuple[Path, str]]) -> None:
