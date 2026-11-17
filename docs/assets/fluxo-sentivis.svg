@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="376" viewBox="0 0 1200 376" role="img" aria-labelledby="a b">
+<title id="a">Fluxo de funcionamento do SentiVis</title><desc id="b">Léxicos de terceiros são auditados, passam por curadoria e são utilizados por métodos experimentais e uma interface exploratória. A avaliação reservada permanece bloqueada.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#3b948d"/></marker></defs>
+<rect x="0" y="0" width="1200" height="376" rx="20" fill="#f7fbfa"/><text x="36" y="48" font-family="Segoe UI,Arial,sans-serif" font-weight="700" font-size="25" fill="#12323b">Como o SentiVis funciona</text><text x="36" y="75" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#57737a">Fluxos efetivamente implementados e limite da avaliação final</text>
+<g font-family="Segoe UI,Arial,sans-serif">
+<g><rect x="35" y="114" width="230" height="106" rx="15" fill="#eaf7f5" stroke="#9bdcd3" stroke-width="2"/><text x="57" y="145" font-size="15" font-weight="700" fill="#2b7871">01 · FONTES</text><text x="57" y="174" font-size="20" font-weight="700" fill="#17343d">OpLexicon 3.0</text><text x="57" y="198" font-size="18" fill="#2a5961">SentiLex-PT02</text></g>
+<path d="M268 167H321" stroke="#3b948d" stroke-width="3" marker-end="url(#arrow)"/>
+<g><rect x="326" y="114" width="230" height="106" rx="15" fill="#fff" stroke="#bcd5d3" stroke-width="2"/><text x="348" y="145" font-size="15" font-weight="700" fill="#2b7871">02 · AUDITORIA</text><text x="348" y="173" font-size="19" font-weight="700" fill="#17343d">Integridade e leitura</text><text x="348" y="197" font-size="17" fill="#45656c">Metadados e conflitos</text></g>
+<path d="M559 167H612" stroke="#3b948d" stroke-width="3" marker-end="url(#arrow)"/>
+<g><rect x="618" y="114" width="230" height="106" rx="15" fill="#fff" stroke="#bcd5d3" stroke-width="2"/><text x="640" y="145" font-size="15" font-weight="700" fill="#2b7871">03 · CURADORIA</text><text x="640" y="173" font-size="19" font-weight="700" fill="#17343d">Triagem de registros</text><text x="640" y="197" font-size="17" fill="#45656c">Sinalizações revisáveis</text></g>
+<path d="M851 167H904" stroke="#3b948d" stroke-width="3" marker-end="url(#arrow)"/>
+<g><rect x="910" y="114" width="254" height="106" rx="15" fill="#eaf7f5" stroke="#9bdcd3" stroke-width="2"/><text x="932" y="145" font-size="15" font-weight="700" fill="#2b7871">04 · EXPLORAÇÃO</text><text x="932" y="173" font-size="19" font-weight="700" fill="#17343d">V01 · V03 · V04</text><text x="932" y="197" font-size="17" fill="#45656c">Interface e testes</text></g>
+<rect x="35" y="260" width="1129" height="79" rx="13" fill="#fff6e8" stroke="#e3c48d" stroke-width="1.5" stroke-dasharray="7 5"/>
+<rect x="55" y="277" width="153" height="44" rx="10" fill="#f4e2bd"/><text x="131" y="305" text-anchor="middle" font-size="16" font-weight="700" fill="#7b501d">ACESSO RESTRITO</text>
+<text x="230" y="290" font-size="18" font-weight="700" fill="#604c32">27 pares de avaliação reservados — não executados</text>
+<text x="230" y="318" font-size="16" fill="#725a3d">Exigem revisão G01–G08, custódia e autorização acadêmica antes de qualquer acesso</text>
+</g></svg>
