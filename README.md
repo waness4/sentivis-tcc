@@ -120,7 +120,17 @@ Ambas as frases obtiveram **pontuação exploratória +1** e **25% de cobertura 
 
 <sub>Figura 2. Comparação demonstrativa com frases artificiais, sem inferência científica de viés.</sub>
 
-**Pendente:** captura panorâmica da página inicial, mostrando o cabeçalho, as configurações e a área de exploração. As [orientações de captura](docs/capturas/README.md) ajudam a produzir um print sem dados privados.
+### Página inicial — laboratório SentiVis
+
+A captura panorâmica da interface foi preparada para publicação. Após o envio do arquivo `docs/capturas/01-pagina-inicial.png`, ela poderá ser exibida aqui:
+
+<!-- Remover os delimitadores de comentário após o upload da imagem.
+<p align="center">
+  <img src="docs/capturas/01-pagina-inicial.png" width="100%" alt="Página inicial do laboratório experimental SentiVis, mostrando cabeçalho, configuração e área de exploração lexical." />
+</p>
+-->
+
+Consulte as [orientações de captura](docs/capturas/README.md) para evitar a exposição de dados privados.
 
 ## Organização do repositório
 
