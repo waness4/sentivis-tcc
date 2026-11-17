@@ -94,15 +94,33 @@ As quantidades foram obtidas dos relatórios `relatorio_auditoria.json` e `relat
 
 ## Interface e capturas
 
-A interface inclui o laboratório de frases, seleção de léxico, método e alvo manual quando aplicável, comparação descritiva e explicações das limitações.
+A interface web permite analisar frases, consultar a cobertura lexical e comparar referências femininas e masculinas de forma **exploratória**. As imagens abaixo são **capturas reais** da execução local, utilizando exclusivamente frases de demonstração. Não são resultados da avaliação final reservada.
 
-**Capturas reais ainda não foram adicionadas**: o repositório não possui prints da aplicação em execução, e imagens fabricadas não seriam evidência adequada. O procedimento para gerar screenshots válidos, sem expor dados privados, está em **[docs/capturas/README.md](docs/capturas/README.md)**.
+### Análise exploratória — OpLexicon 3.0
 
-| Tela | O que mostrar |
-| :--- | :--- |
-| Laboratório | Configuração do léxico e área de exploração. |
-| Análise | Termos encontrados, cobertura e possíveis abstenções, usando apenas exemplos de demonstração. |
-| Comparação | Frases artificiais feminina/masculina e aviso de que o delta não comprova viés. |
+**Exemplo:** “O atendimento foi excelente.”
+
+A tela registra **pontuação exploratória +1**, classe exploratória **positiva** e **cobertura lexical superficial de 25%** (um dos quatro tokens encontrou correspondência). O termo “excelente” recebeu polaridade +1. A cobertura não representa acurácia ou confiança estatística.
+
+<p align="center">
+  <img src="docs/capturas/02-analise-sentimentos.png" width="100%" alt="Captura real: resultado de análise de O atendimento foi excelente, pontuação mais um e cobertura lexical de 25 por cento." />
+</p>
+
+<sub>Figura 1. Resultado de uma consulta lexical demonstrativa. Não é uma classificação validada cientificamente.</sub>
+
+### Comparação descritiva — referências de gênero
+
+**Exemplo:** “A aluna é dedicada.” / “O aluno é dedicado.”
+
+Ambas as frases obtiveram **pontuação exploratória +1** e **25% de cobertura superficial**; a diferença descritiva (feminino − masculino) foi **0**. Esse resultado não valida a equivalência semântica nem comprova ausência de viés.
+
+<p align="center">
+  <img src="docs/capturas/03-comparacao-genero.png" width="100%" alt="Captura real: comparação descritiva entre A aluna é dedicada e O aluno é dedicado, ambas com pontuação mais um e diferença zero." />
+</p>
+
+<sub>Figura 2. Comparação demonstrativa com frases artificiais, sem inferência científica de viés.</sub>
+
+**Pendente:** captura panorâmica da página inicial, mostrando o cabeçalho, as configurações e a área de exploração. As [orientações de captura](docs/capturas/README.md) ajudam a produzir um print sem dados privados.
 
 ## Organização do repositório
 
