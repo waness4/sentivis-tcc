@@ -38,6 +38,18 @@ Inspeção estática dos arquivos `backend/metricas_exploratorias.py`, `backend/
 
 **Verificações positivas de código:** o cálculo descritivo separa ausência de pontuação de zero; valida o delta apenas para pares pontuados e registra denominadores. O executor de avaliação possui função `executar_final` que lança `PermissionError`, e seu modo de simulação confere conteúdo contra uma fixture artificial. Os testes contêm cenários para rejeitar dados malformados, impedir a execução final pela CLI e verificar abstenções.
 
-**Pendência técnica identificada:** em `backend/metricas_exploratorias.py`, `_salvar_resultados` grava o arquivo JSON antes do CSV. Uma falha durante a escrita do segundo arquivo pode deixar uma saída parcial. Recomenda-se implementar escrita em arquivos temporários, verificação de conclusão e política de publicação/limpeza de falhas, com testes que simulem erros de I/O, sem modificar registros de pesquisa. A existência do par JSON/CSV não deve ser tratada como prova de conclusão bem-sucedida sem validação.
+**Correção implementada — pendente de execução dos testes:** `backend/metricas_exploratorias.py` agora serializa JSON e CSV antes de gravar, utiliza arquivos temporários nos diretórios de destino, publica arquivos completos por hard links exclusivos (`os.link`) sem sobrescrever resultados existentes e desfaz a primeira publicação se a segunda falhar. Foram adicionados quatro testes em `backend/tests/test_metricas_exploratorias.py` para sucesso, CSV inválido, falha na segunda publicação e recusa de sobrescrita. **Limite:** os dois links não constituem uma transação atômica conjunta; interrupção abrupta entre as publicações ainda pode deixar um arquivo publicado. O ambiente deve suportar hard links locais. Conferir os dois arquivos antes de usar os resultados e não tratar esta implementação como garantia de recuperação após queda de energia.
 
 **Limite da verificação:** a leitura foi estática e seletiva; não houve execução dos testes nem inspeção integral de todos os ramos de cada módulo. O resultado desta seção não representa autorização acadêmica nem comprovação de segurança em produção. Os procedimentos da avaliação reservada continuam bloqueados.
+
+## Correção de publicação dos resultados — validação pendente
+
+A alteração de gravação do par JSON/CSV foi versionada com testes de regressão, sem modificar a fórmula das métricas, os dados reservados ou os comandos bloqueados do executor final. **Os testes adicionados ainda não foram executados neste ambiente**. Para verificar localmente:
+
+```powershell
+python -m pip install -r backend/requirements-dev.txt
+python -m pytest backend/tests/test_metricas_exploratorias.py -q -rs
+python -m pytest backend/tests -q -rs
+```
+
+Antes de considerar os resultados publicáveis, confirmar também o comportamento de hard links no sistema de arquivos utilizado. A operação evita sobrescrita e reverte falhas tratadas, mas não garante atomicidade de dois arquivos sob interrupção do processo. Uma futura etapa pode publicar um manifesto de conclusão, com hashes de ambos os relatórios, para distinguir conjuntos completos de artefatos órfãos.
