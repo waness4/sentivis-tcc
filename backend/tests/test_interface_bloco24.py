@@ -99,4 +99,7 @@ def test_arquivo_real_possui_a_identificacao_e_tabela():
     pagina = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
     css = (ROOT / "frontend" / "styles.css").read_text(encoding="utf-8")
     assert patch.TEXTO_NOVO in pagina
-    assert patch.MARCADOR_CSS in css
+    assert '.context-table-wrap {' in css
+    assert 'overflow-x: auto;' in css
+    assert '.context-table th:first-child,' in css
+    assert '.compare-card .term-table:not(.context-table) th:first-child,' in css

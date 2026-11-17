@@ -10,9 +10,8 @@ from pathlib import Path
 
 TEXTO_ANTIGO = "Versão de demonstração · v0.1"
 TEXTO_NOVO = "Interface experimental · baselines V01 e V04"
-MARCADOR_CSS = "/* Bloco 24 — legibilidade das tabelas e navegação horizontal local. */"
-ESTILOS = f"""
-{MARCADOR_CSS}
+MARCADOR_CSS = ".compare-card .term-table:not(.context-table) th:first-child,"
+ESTILOS = """
 /* O conteúdo técnico precisa continuar legível quando há dois cartões lado a lado. */
 .context-table-wrap {{
   overflow-x: auto;
