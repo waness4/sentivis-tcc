@@ -1,0 +1,2 @@
+# Preservar os bytes do conjunto público de controles cujo SHA-256 é fixado no protocolo.
+data/controles/controles_sintaticos_v01.csv -text
